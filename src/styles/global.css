@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+#root {
+  @apply min-h-full;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  width: 100%;
+}
+
+
+
+@layer base {
+
+  @font-face {
+    font-family: 'MikkelWind';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url(/assets/mikkelwind.woff2) format('woff2');
+  }
+
+  @font-face {
+    font-family: 'Windsor';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url(/assets/Windsor-Bold.ttf) format('truetype');
+  }
+
+  @font-face {
+    font-family: 'Gothamhtf';
+    font-style: normal;
+    font-display: swap;
+    src: url(/assets/GothamHTF-Book.otf) format('opentype');
+  }
+
+  h1 {
+    font-family: "MikkelWind", system-ui, sans-serif;
+    @apply text-brand-blue;
+  }
+  
+  h2, h3 {
+    font-family: "Windsor", system-ui, sans-serif;
+    @apply text-brand-blue;
+  }
+
+  body {
+    font-family: "Gothamhtf", system-ui, sans-serif;
+  }
+
+  a {
+    @apply text-brand-burgundy
+  }
+
+}
+
+html {
+  @apply min-h-full;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  width: 100%;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: antialiased;
+  background-position: top center;
+  background-color: #fff;
+  @apply m-0 p-0 text-base bg-contain bg-no-repeat;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  width: 100%;
+  font-size: 16px;
+}
+
