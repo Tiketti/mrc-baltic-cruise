@@ -5,6 +5,8 @@ import { Footer } from './components/Footer';
 import { Header } from './components/Header';
 import { Logo } from './components/Logo';
 import { cities } from './Cities';
+import { Link } from 'lucide-react';
+import { Faq } from './components/Faq';
 
 function App() {
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
@@ -23,10 +25,16 @@ function App() {
       />
       <Header />
       <Logo />
-      <div className='flex flex-col md:flex-col space-y-8 md:space-x-8 md:w-full items-center'>
-        <h2 className='text-4xl w-full inline-flex justify-center md:pl-8'>
-          Our itinerary
-        </h2>
+      <div className='flex flex-col md:flex-col space-y-8 md:space-x-8 md:w-full items-center justify-center'>
+        <a
+          href='#itinerary'
+          className='flex items-center group border-b border-brand-paper hover:border-brand-burgundy'
+        >
+          <Link className='invisible group-hover:visible' />
+          <h2 id='itinerary' className='pl-2'>
+            Our itinerary
+          </h2>
+        </a>
         <div className='flex flex-col w-full md:flex-row md:space-x-8 space-y-8 md:space-y-0 md:px-8'>
           {cities.map(({ name, date, imageUrl }) => (
             <CityCard
@@ -38,6 +46,7 @@ function App() {
             />
           ))}
         </div>
+        <Faq />
       </div>
       <div className='flex justify-center'>
         <a
@@ -47,7 +56,7 @@ function App() {
           rel='noreferrer'
         >
           <img src='assets/strava-seeklogo.svg' alt='Logo' className='h-6' />
-          <span className='text-brand-burgundy border-b hover:border-dashed border-brand-burgundy font-semibold text-xl'>
+          <span className='text-brand-burgundy border-b border-brand-paper hover:border-brand-burgundy font-semibold text-xl'>
             Strava event
           </span>
         </a>

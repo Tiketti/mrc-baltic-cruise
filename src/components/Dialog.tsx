@@ -28,7 +28,7 @@ export const Dialog = ({ open, onOpenChange, title, content }: DialogProps) => (
           The agenda!
         </Description>
         {content}
-        <div className='flex justify-end mt-6' />
+        <div className='flex justify-end mt-8' />
         <Close asChild>
           <button type='button' className='IconButton' aria-label='Close'>
             <XCircle size='36' />
