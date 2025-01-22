@@ -2,7 +2,8 @@ export const cities = [
   {
     name: 'Stockholm',
     date: '18.4.2025',
-    imageUrl: '/assets/stockholm_small.webp',
+    imageUrlSmall: '/assets/stockholm_small.webp',
+    imageUrl: '/assets/stockholm.webp',
     agenda: `Friday, April 18th, 2025
 
     Run in Stockholm hosted by MRC Stockholm. Time to be confirmed.
@@ -14,7 +15,8 @@ export const cities = [
   {
     name: 'Tallinn',
     date: '19.4.2025',
-    imageUrl: '/assets/tallinn_small.webp',
+    imageUrlSmall: '/assets/tallinn_small.webp',
+    imageUrl: '/assets/tallinn.webp',
     agenda: `Saturday, April 19th, 2025
 
     Run in Tallinn hosted by Pühaste jooksuklubi.
@@ -28,7 +30,8 @@ export const cities = [
   {
     name: 'Helsinki',
     date: '20.4.2025',
-    imageUrl: '/assets/helsinki_small.webp',
+    imageUrlSmall: '/assets/helsinki_small.webp',
+    imageUrl: '/assets/helsinki.webp',
     agenda: `Sunday, April 20th, 2025
 
     Run in Helsinki hosted by MRC Helsinki. Starting at 12:30 from SalamaNation.

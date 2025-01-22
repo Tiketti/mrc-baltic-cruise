@@ -36,12 +36,13 @@ function App() {
           </h2>
         </a>
         <div className='flex flex-col w-full md:flex-row md:space-x-8 space-y-8 md:space-y-0 md:px-8'>
-          {cities.map(({ name, date, imageUrl }) => (
+          {cities.map(({ name, date, imageUrl, imageUrlSmall }) => (
             <CityCard
               key={name}
               city={name}
               date={date}
               imageUrl={imageUrl}
+              imageUrlSmall={imageUrlSmall}
               onClick={() => setSelectedCity(name)}
             />
           ))}
