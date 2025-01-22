@@ -1,8 +1,12 @@
 {
   "name": "mrc-baltic-cruise",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
+  "engines": {
+    "pnpm": ">=9.0.0",
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "vite --port 5151",
     "build": "tsc -b && vite build",

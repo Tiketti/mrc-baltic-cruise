@@ -2,7 +2,7 @@ export const cities = [
   {
     name: 'Stockholm',
     date: '18.4.2025',
-    imageUrl: '/assets/stockholm.jpg',
+    imageUrl: '/assets/stockholm.webp',
     agenda: `Friday, April 18th, 2025
 
     Running time to be confirmed.
@@ -14,7 +14,7 @@ export const cities = [
   {
     name: 'Tallinn',
     date: '19.4.2025',
-    imageUrl: '/assets/tallinn.jpg',
+    imageUrl: '/assets/tallinn.webp',
     agenda: `Saturday, April 19th, 2025
 
     Running time to be confirmed.
@@ -24,7 +24,7 @@ export const cities = [
   {
     name: 'Helsinki',
     date: '20.4.2025',
-    imageUrl: '/assets/helsinki.jpg',
+    imageUrl: '/assets/helsinki.webp',
     agenda: `Sunday, April 20th, 2025
 
     Run 12:30 starting from SalamaNation.
