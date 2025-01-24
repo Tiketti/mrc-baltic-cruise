@@ -81,7 +81,7 @@ export const Faq = () => {
 				<Accordion type="multiple" className="">
 					{faqItems.map(({ title, nodeContent, content }) => (
 						<AccordionItem key={title} value={title} className="">
-							<AccordionTrigger className="flex flex-1 text-nowrap items-center justify-between py-4 transition-all data-[state=open]:text-brand-burgundy [&[data-state=open]>svg]:rotate-180 text-2xl font-[windsor] cursor-pointer">
+							<AccordionTrigger className="flex flex-1 items-center justify-between py-4 transition-all data-[state=open]:text-brand-burgundy [&[data-state=open]>svg]:rotate-180 text-2xl font-[windsor] cursor-pointer">
 								{title}
 								<ChevronDown className="ml-4 h-4 w-4 shrink-0 transition-transform duration-200" />
 							</AccordionTrigger>
