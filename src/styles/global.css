@@ -1,7 +1,7 @@
-@import '@radix-ui/colors/black-alpha.css';
-@import '@radix-ui/colors/green.css';
-@import '@radix-ui/colors/mauve.css';
-@import '@radix-ui/colors/violet.css';
+@import "@radix-ui/colors/black-alpha.css";
+@import "@radix-ui/colors/green.css";
+@import "@radix-ui/colors/mauve.css";
+@import "@radix-ui/colors/violet.css";
 
 @tailwind base;
 @tailwind components;
@@ -22,36 +22,36 @@
 
 @layer base {
   @font-face {
-    font-family: 'MikkelWind';
+    font-family: "MikkelWind";
     font-style: normal;
     font-weight: 600;
     font-display: swap;
-    src: url(/assets/mikkelwind.woff2) format('woff2');
+    src: url(/assets/mikkelwind.woff2) format("woff2");
   }
 
   @font-face {
-    font-family: 'Windsor';
+    font-family: "Windsor";
     font-style: normal;
     font-weight: 600;
     font-display: swap;
-    src: url(/assets/Windsor-Bold.ttf) format('truetype');
+    src: url(/assets/Windsor-Bold.ttf) format("truetype");
   }
 
   @font-face {
-    font-family: 'Gothamhtf';
+    font-family: "Gothamhtf";
     font-style: normal;
     font-display: swap;
-    src: url(/assets/GothamHTF-Book.otf) format('opentype');
+    src: url(/assets/GothamHTF-Book.otf) format("opentype");
   }
 
   h1 {
-    font-family: 'MikkelWind', system-ui, sans-serif;
+    font-family: "MikkelWind", system-ui, sans-serif;
     @apply text-brand-blue;
   }
 
   h2,
   h3 {
-    font-family: 'Windsor', system-ui, sans-serif;
+    font-family: "Windsor", system-ui, sans-serif;
     @apply text-brand-blue;
   }
 
@@ -64,7 +64,7 @@
   }
 
   body {
-    font-family: 'Gothamhtf', system-ui, sans-serif;
+    font-family: "Gothamhtf", system-ui, sans-serif;
   }
 
   a {
@@ -112,8 +112,8 @@ input {
 .DialogContent {
   background-color: white;
   border-radius: 6px;
-  box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
-    hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
+  box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%)
+    0px 10px 20px -15px;
   position: fixed;
   top: 50%;
   left: 50%;

@@ -5,7 +5,7 @@ import "./styles/global.css";
 
 // biome-ignore lint/style/noNonNullAssertion: TODO
 createRoot(document.getElementById("root")!).render(
-	<StrictMode>
-		<App />
-	</StrictMode>,
+  <StrictMode>
+    <App />
+  </StrictMode>,
 );

@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "vite --port 5151",
     "build": "tsc -b && vite build",
-    "lint": "eslint .",
+    "lint:write": "biome format --write ./src",
     "preview": "vite preview"
   },
   "dependencies": {
