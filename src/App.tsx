@@ -1,12 +1,13 @@
+import { Link } from "lucide-react";
 import { useState } from "react";
 import CityCard from "./components/CityCard";
 import { Dialog } from "./components/Dialog";
+import { Faq } from "./components/Faq";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
+import { HostsSection } from "./components/Hosts";
 import { Logo } from "./components/Logo";
 import { cities, faqItems } from "./data";
-import { Link } from "lucide-react";
-import { Faq } from "./components/Faq";
 
 function App() {
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
@@ -25,7 +26,7 @@ function App() {
       />
       <Header />
       <Logo />
-      <div className="flex flex-col md:flex-col space-y-8 md:space-x-8 md:w-full items-center justify-center">
+      <div className="flex flex-col space-y-8 md:w-full items-center justify-center px-8">
         <a
           href="#itinerary"
           className="flex items-center group border-b border-brand-paper hover:border-brand-burgundy"
@@ -35,7 +36,7 @@ function App() {
             Our itinerary
           </h2>
         </a>
-        <div className="flex flex-col w-full md:flex-row md:space-x-8 space-y-8 md:space-y-0 md:px-8">
+        <div className="flex flex-col w-full md:flex-row md:space-x-8 space-y-8 md:space-y-0">
           {cities.map(({ name, date, imageUrl, imageUrlSmall }) => (
             <CityCard
               key={name}
@@ -48,6 +49,7 @@ function App() {
           ))}
         </div>
         <Faq items={faqItems} />
+        <HostsSection />
       </div>
       <div id="strava" className="flex justify-center">
         <a
