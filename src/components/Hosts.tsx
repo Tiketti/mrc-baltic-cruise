@@ -16,7 +16,7 @@ export const HostsSection = () => {
           {hostItems.map((host) => (
             <Trigger
               key={host.id}
-              className="px-4 py-2 text-lg font-extrabold cursor-pointer hover:text-brand-burgundy data-[state=active]:border-b-2 data-[state=active]:border-brand-burgundy data-[state=active]:text-brand-burgundy"
+              className="flex-1 md:flex-initial text-center px-4 py-2 text-lg font-extrabold cursor-pointer hover:text-brand-burgundy data-[state=active]:border-b-2 data-[state=active]:border-brand-burgundy data-[state=active]:text-brand-burgundy"
               value={host.id}
             >
               {host.city}
