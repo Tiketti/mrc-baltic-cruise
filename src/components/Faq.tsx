@@ -19,7 +19,7 @@ export const Faq = ({ items }: { items: FaqItem[] }) => {
           FAQ
         </h2>
       </a>
-      <div className="flex w-full max-w-2xl text-left items-start mt-8 px-8">
+      <div className="flex w-full max-w-3xl text-left items-start mt-8 px-8">
         <Accordion type="multiple" className="">
           {items.map(({ title, nodeContent, content }) => (
             <AccordionItem key={title} value={title} className="">
