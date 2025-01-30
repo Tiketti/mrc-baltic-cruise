@@ -30,7 +30,7 @@ export const HostsSection = () => {
               <img
                 src={host.image}
                 alt={host.imageAlt}
-                className="float-left md:max-w-sm mr-4 mb-4"
+                className="float-left md:max-w-sm mr-4 mb-4 shadow-lg"
               />
               <h4 className="text-2xl text-left mb-4">{host.name}</h4>
               {host.content.map((paragraph, index) => (

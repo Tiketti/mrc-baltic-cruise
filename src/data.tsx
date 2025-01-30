@@ -153,7 +153,8 @@ export const hostItems = [
     content: [
       "The first attempt to start MRC Stockholm was way back in 2015. But that group folded after 2 runs.",
       "In 2017 Mikkeller Stockholm opened in Östermalm and Mikkel himself was there to start up the running club again.",
-      "The last 3.5 years our home base has been the Mikkeller Söder bar. We run every Tuesday at 18:00 and of course every first Saturday. MRC Stockholm is captained by David and Magnus.",
+      "The last 3.5 years our home base has been the Mikkeller Söder bar. We run every Tuesday at 18:00 and of course every first Saturday.",
+      "MRC Stockholm is captained by David and Magnus.",
     ],
   },
   {
@@ -184,9 +185,9 @@ export const hostItems = [
     name: "MRC Helsinki",
     content: [
       "'You don't have to be a runner to join us, but you just may become one.'",
-      "We've been running and chugging since 2017. We celebrate every First Saturday of the month like it's Christmas! On those Saturdays, we have three distances and pace groups.",
+      "We've been running and chugging since 2017. We treat every First Saturday of the month like a runner's fest. For the running part, we have three distances and pace groups; for the post-run beers, the wonderful SalamaNation acts as our neon-lit club house.",
       "We also host Thirsty Tuesday runs which are even more casual events every Tuesday at 18:00.",
-      "Our captains are Heidi, Milla, Perttu and Rasmus.",
+      "Captains Heidi, Milla, Perttu and Rasmus are at your service.",
       "We're happy to have you join us!",
     ],
   },
