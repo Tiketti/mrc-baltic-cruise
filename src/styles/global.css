@@ -63,6 +63,10 @@
     @apply text-2xl w-full inline-flex justify-center;
   }
 
+  h4 {
+    @apply text-lg font-extrabold;
+  }
+
   body {
     font-family: "Gothamhtf", system-ui, sans-serif;
   }

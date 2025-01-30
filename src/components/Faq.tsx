@@ -19,7 +19,7 @@ export const Faq = ({ items }: { items: FaqItem[] }) => {
           FAQ
         </h2>
       </a>
-      <div className="flex w-full max-w-2xl text-left items-start mt-8 px-8">
+      <div className="flex w-full max-w-3xl text-left items-start mt-8 px-8">
         <Accordion type="multiple" className="">
           {items.map(({ title, nodeContent, content }) => (
             <AccordionItem key={title} value={title} className="">
@@ -28,7 +28,7 @@ export const Faq = ({ items }: { items: FaqItem[] }) => {
                 <ChevronDown className="ml-4 h-4 w-4 shrink-0 transition-transform duration-200" />
               </AccordionTrigger>
               <AccordionContent className="whitespace-pre-line overflow-hidden transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
-                {nodeContent || content}
+                {nodeContent ?? content}
               </AccordionContent>
             </AccordionItem>
           ))}
