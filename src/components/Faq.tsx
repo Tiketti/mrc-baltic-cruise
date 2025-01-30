@@ -28,7 +28,7 @@ export const Faq = ({ items }: { items: FaqItem[] }) => {
                 <ChevronDown className="ml-4 h-4 w-4 shrink-0 transition-transform duration-200" />
               </AccordionTrigger>
               <AccordionContent className="whitespace-pre-line overflow-hidden transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
-                {nodeContent || content}
+                {nodeContent ?? content}
               </AccordionContent>
             </AccordionItem>
           ))}

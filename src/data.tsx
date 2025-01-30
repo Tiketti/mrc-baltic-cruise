@@ -1,11 +1,11 @@
 import type { ReactNode } from "react";
 
-// TODO: Make content and nodeContent mutually exclusive
-export interface FaqItem {
+export type FaqItem = {
   title: string;
-  content: string;
-  nodeContent?: ReactNode;
-}
+} & (
+  | { nodeContent: ReactNode; content?: never }
+  | { nodeContent?: never; content: string }
+);
 
 export const faqItems: FaqItem[] = [
   {
@@ -28,7 +28,6 @@ export const faqItems: FaqItem[] = [
   },
   {
     title: "Which boats should I take?",
-    content: "",
     nodeContent: (
       <>
         MRC Helsinki is taking the 17:00 Silja Symphony from Helsinki (overnight
@@ -56,7 +55,6 @@ export const faqItems: FaqItem[] = [
   },
   {
     title: "How can I join?",
-    content: "",
     nodeContent: (
       <>
         Follow this page and our Strava events. We also have an Instagram
