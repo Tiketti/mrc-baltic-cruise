@@ -33,13 +33,15 @@ export const HostsSection = () => {
 
         {hostItems.map((host) => (
           <Content key={host.id} value={host.id} className="p-4">
-            <div className="">
+            <div>
               <img
                 src={host.image}
                 alt={host.imageAlt}
                 className="float-left md:max-w-sm mr-4 mb-4 shadow-lg"
               />
-              <h4 className="text-2xl text-left mb-4">{host.name}</h4>
+              <h3 className="text-2xl block text-left text-brand-burgundy mb-4">
+                {host.name}
+              </h3>
               {host.content.map((paragraph, index) => (
                 // biome-ignore lint/suspicious/noArrayIndexKey: The paragraphs won't change on the fly
                 <p key={index} className="text-left mb-4">
