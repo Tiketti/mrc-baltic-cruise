@@ -1,12 +1,19 @@
 import { Root, List, Trigger, Content } from "@radix-ui/react-tabs";
 import { hostItems } from "../data";
+import { Link } from "lucide-react";
 
 export const HostsSection = () => {
   return (
-    <section className="w-full max-w-3xl mx-auto px-4">
-      <h3 className="text-4xl font-windsor text-center mb-8">
-        Meet Your Hosts
-      </h3>
+    <div className="flex flex-col w-full items-center justify-center">
+      <a
+        href="#hosts"
+        className="flex items-center justify-center mb-8 group border-b border-brand-paper hover:border-brand-burgundy"
+      >
+        <Link className="invisible group-hover:visible" />
+        <h2 id="hosts" className="pl-2">
+          Meet Your Hosts
+        </h2>
+      </a>
 
       <Root defaultValue="stockholm">
         <List
@@ -43,6 +50,6 @@ export const HostsSection = () => {
           </Content>
         ))}
       </Root>
-    </section>
+    </div>
   );
 };
