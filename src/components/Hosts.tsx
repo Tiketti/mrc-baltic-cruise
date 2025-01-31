@@ -4,7 +4,7 @@ import { Link } from "lucide-react";
 
 export const HostsSection = () => {
   return (
-    <div className="flex flex-col w-full items-center justify-center">
+    <div className="flex flex-col w-full md:max-w-screen-md lg:max-w-screen-lg items-center justify-center">
       <a
         href="#hosts"
         className="flex items-center justify-center mb-8 group border-b border-brand-paper hover:border-brand-burgundy"
