@@ -101,11 +101,13 @@ export const cities = [
     imageUrl: "/assets/stockholm.webp",
     agenda: `Friday, April 18th, 2025
 
-    Run in Stockholm hosted by MRC Stockholm. Time to be confirmed.
+    Preliminary program:
 
-    Post-run beers and party.
+    12:00 Run from Mikkeller Bar with two different pace and distance groups, followed by pizza and beers! Bagdrop available.
 
-    Boat 17:30 Tallink Silja Baltic Queen to Tallinn; overnight trip, arrival to Tallinn Saturday 10:45.`,
+    15:00 Run to a secret stop.
+
+    17:30 Tallink Silja Baltic Queen to Tallinn; overnight trip, arrival to Tallinn Saturday 10:45.`,
   },
   {
     name: "Tallinn",
