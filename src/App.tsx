@@ -13,17 +13,18 @@ import { cities, faqItems } from "./data";
 function App() {
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
 
+  const selectedCityData = cities.find(
+    ({ name }) => name.toUpperCase() === selectedCity?.toUpperCase(),
+  );
+
   return (
     <div className="flex flex-col space-y-8">
       <Dialog
         open={!!selectedCity}
         onOpenChange={() => setSelectedCity(null)}
         title={selectedCity?.toLocaleUpperCase() || ""}
-        content={
-          cities.find(
-            ({ name }) => name.toUpperCase() === selectedCity?.toUpperCase(),
-          )?.agenda
-        }
+        date={selectedCityData?.date}
+        content={selectedCityData?.agenda}
       />
       <Header />
       <Logo />

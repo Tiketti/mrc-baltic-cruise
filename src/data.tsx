@@ -99,24 +99,29 @@ export const cities = [
     date: "18.4.2025",
     imageUrlSmall: "/assets/stockholm_small.webp",
     imageUrl: "/assets/stockholm.webp",
-    agenda: `Friday, April 18th, 2025
+    agenda: `11:50 bag drop open - please drop off your bag before 12:00.
 
-    Preliminary program:
+    12:00 Run from Mikkeller Bar with three different groups:
+    - 5 km - cozy (pace 6:20-6:30)
+    - 7 km - lazy (pace 6:15)
+    - 9 km - hazy (pace 5:30-5:40)
 
-    12:00 Run from Mikkeller Bar with two different pace and distance groups, followed by pizza and beers! Bagdrop available.
+    :beer: After run beers!
 
-    15:00 Run to a secret stop.
+    15:00 Run 5.5 km or take a bus to our secret stop.
 
-    17:30 Tallink Silja Baltic Queen to Tallinn; overnight trip, arrival to Tallinn Saturday 10:45.`,
+    17:30 Tallink Silja Baltic Queen to Tallinn; overnight trip, arrival to Tallinn Saturday 10:45.
+    
+    Mikkeller Bar address:
+    Östgötagatan 33 
+    Subway stop: Medborgarplatsen`,
   },
   {
     name: "Tallinn",
     date: "19.4.2025",
     imageUrlSmall: "/assets/tallinn_small.webp",
     imageUrl: "/assets/tallinn.webp",
-    agenda: `Saturday, April 19th, 2025
-
-    Run in Tallinn hosted by Pühaste jooksuklubi.
+    agenda: `Run in Tallinn hosted by Pühaste jooksuklubi.
 
     Post-run beers and party.
 
@@ -129,9 +134,7 @@ export const cities = [
     date: "20.4.2025",
     imageUrlSmall: "/assets/helsinki_small.webp",
     imageUrl: "/assets/helsinki.webp",
-    agenda: `Sunday, April 20th, 2025
-
-    Run in Helsinki hosted by MRC Helsinki. Starting at 12:30 from SalamaNation.
+    agenda: `Run in Helsinki hosted by MRC Helsinki. Starting at 12:30 from SalamaNation.
 
     Post-run beers and party at SalamaNation.
 

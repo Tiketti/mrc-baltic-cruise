@@ -126,7 +126,7 @@ input {
   width: 90vw;
   max-width: 450px;
   max-height: 85vh;
-  padding: 25px;
+  padding: 1.5rem;
   animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .DialogContent:focus {
@@ -232,6 +232,11 @@ input {
 }
 .Input:focus {
   box-shadow: 0 0 0 2px var(--violet-8);
+}
+
+/* A bit lighter shade to match what's used in .DialogDescription */
+.faded {
+  color: var(--mauve-11);
 }
 
 @keyframes overlayShow {
