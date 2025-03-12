@@ -34,10 +34,10 @@ export const faqItems: FaqItem[] = [
         trip, arrives 10:00 on Friday).
         <br />
         <br />
-        STO - TLN: Tallink Silja Baltic Queen, Friday 19th at 17:30.
+        STO - TLN: Tallink Silja Baltic Queen, Friday 18th at 17:30.
         <br />
         <br />
-        TLN - HEL: Tallink Silja Megastar, Saturday 20th at 22:30. Most of the
+        TLN - HEL: Tallink Silja Megastar, Saturday 19th at 22:30. Most of the
         cruise attendees will travel on the above. Tickets are available online
         at{" "}
         <a href="https://tallink.com" target="_blank" rel="noreferrer">
