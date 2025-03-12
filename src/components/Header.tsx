@@ -9,7 +9,7 @@ export const Header = () => {
   };
 
   return (
-    <header className="p-2 text-center sticky top-0 bg-brand-blue shadow-lg shadow-brand-blue">
+    <header className="sticky top-0 bg-brand-blue p-2 text-center shadow-brand-blue shadow-lg">
       <button
         type="button"
         className="p-2 focus:outline-none focus:ring-2 focus:ring-brand-paper focus:ring-offset-2 focus:ring-offset-brand-blue"
@@ -18,7 +18,7 @@ export const Header = () => {
         onClick={scrollToTop}
         onKeyDown={handleKeyDown}
       >
-        <h1 className="text-2xl sm:text-4xl md:text-5xl tracking-wide text-brand-paper cursor-pointer">
+        <h1 className="cursor-pointer text-2xl text-brand-paper tracking-wide sm:text-4xl md:text-5xl">
           MRC Baltic Cruise 2025
         </h1>
       </button>

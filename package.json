@@ -10,7 +10,8 @@
   "scripts": {
     "dev": "vite --port 5151",
     "build": "tsc -b && vite build",
-    "lint:write": "biome format --write ./src",
+    "lint:write": "biome lint --write ./src",
+    "lint:write:unsafe": "biome lint --write --unsafe ./src",
     "preview": "vite preview"
   },
   "dependencies": {

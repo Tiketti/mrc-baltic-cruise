@@ -4,10 +4,10 @@ import { Link } from "lucide-react";
 
 export const HostsSection = () => {
   return (
-    <div className="flex flex-col w-full md:max-w-screen-md lg:max-w-screen-lg items-center justify-center">
+    <div className="flex w-full flex-col items-center justify-center md:max-w-screen-md lg:max-w-screen-lg">
       <a
         href="#hosts"
-        className="flex items-center justify-center mb-8 group border-b border-brand-paper hover:border-brand-burgundy"
+        className="group mb-8 flex items-center justify-center border-brand-paper border-b hover:border-brand-burgundy"
       >
         <Link className="invisible group-hover:visible" />
         <h2 id="hosts" className="pl-2">
@@ -17,13 +17,13 @@ export const HostsSection = () => {
 
       <Root defaultValue="stockholm">
         <List
-          className="flex border-b border-gray-200"
+          className="flex border-gray-200 border-b"
           aria-label="Meet your hosts"
         >
           {hostItems.map((host) => (
             <Trigger
               key={host.id}
-              className="flex-1 md:flex-initial text-center px-4 py-2 text-lg font-extrabold cursor-pointer hover:text-brand-burgundy data-[state=active]:border-b-2 data-[state=active]:border-brand-burgundy data-[state=active]:text-brand-burgundy"
+              className="flex-1 cursor-pointer px-4 py-2 text-center font-extrabold text-lg hover:text-brand-burgundy data-[state=active]:border-brand-burgundy data-[state=active]:border-b-2 data-[state=active]:text-brand-burgundy md:flex-initial"
               value={host.id}
             >
               {host.city}
@@ -37,14 +37,14 @@ export const HostsSection = () => {
               <img
                 src={host.image}
                 alt={host.imageAlt}
-                className="float-left md:max-w-sm mr-4 mb-4 shadow-lg"
+                className="float-left mr-4 mb-4 shadow-lg md:max-w-sm"
               />
-              <h3 className="text-2xl block text-left text-brand-burgundy mb-4">
+              <h3 className="mb-4 block text-left text-2xl text-brand-burgundy">
                 {host.name}
               </h3>
               {host.content.map((paragraph, index) => (
-                // biome-ignore lint/suspicious/noArrayIndexKey: The paragraphs won't change on the fly
-                <p key={index} className="text-left mb-4">
+                // biome-ignore lint/suspicious/noArrayIndexKey: The paragraphs are static
+                <p key={index} className="mb-4 text-left">
                   {paragraph}
                 </p>
               ))}

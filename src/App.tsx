@@ -28,17 +28,17 @@ function App() {
       />
       <Header />
       <Logo />
-      <div className="flex flex-col space-y-8 md:w-full items-center justify-center px-8">
+      <div className="flex flex-col items-center justify-center space-y-8 px-8 md:w-full">
         <a
           href="#itinerary"
-          className="flex items-center group border-b border-brand-paper hover:border-brand-burgundy"
+          className="group flex items-center border-brand-paper border-b hover:border-brand-burgundy"
         >
           <Link className="invisible group-hover:visible" />
           <h2 id="itinerary" className="pl-2">
             Our itinerary
           </h2>
         </a>
-        <div className="flex flex-col w-full md:flex-row md:space-x-8 space-y-8 md:space-y-0">
+        <div className="flex w-full flex-col space-y-8 md:flex-row md:space-x-8 md:space-y-0">
           {cities.map(({ name, date, imageUrl, imageUrlSmall }) => (
             <CityCard
               key={name}

@@ -31,11 +31,11 @@ export const Dialog = ({
   const processedContent =
     typeof content === "string"
       ? content.split(":beer:").map((text, index, array) => (
-          // biome-ignore lint/suspicious/noArrayIndexKey: Elements are not changing
+          // biome-ignore lint/suspicious/noArrayIndexKey: Elements are static
           <Fragment key={index}>
             {text}
             {index < array.length - 1 && (
-              <Beer className="inline faded" size="24" strokeWidth="2" />
+              <Beer className="faded inline" size="24" strokeWidth="2" />
             )}
           </Fragment>
         ))
@@ -45,7 +45,7 @@ export const Dialog = ({
     <Root open={open} onOpenChange={onOpenChange}>
       <Portal>
         <Overlay className="DialogOverlay overflow-y-auto" />
-        <Content className="DialogContent whitespace-pre-line max-h-[85vh] overflow-y-auto">
+        <Content className="DialogContent max-h-[85vh] overflow-y-auto whitespace-pre-line">
           <Title className="DialogTitle">{title}</Title>
           <Description className="DialogDescription flex items-center">
             <Calendar size="24" strokeWidth="2" className="mr-2" />
@@ -53,7 +53,7 @@ export const Dialog = ({
               format(parse(date, "dd.MM.yyyy", new Date()), "EEEE, MMMM do")}
           </Description>
           {processedContent}
-          <div className="flex justify-end mt-8" />
+          <div className="mt-8 flex justify-end" />
           <Close asChild>
             <button type="button" className="IconButton" aria-label="Close">
               <XCircle size="36" />

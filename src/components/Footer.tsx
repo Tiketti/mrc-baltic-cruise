@@ -1,6 +1,6 @@
 export const Footer = () => {
   return (
-    <div className="flex text-center justify-center w-full p-0">
+    <div className="flex w-full justify-center p-0 text-center">
       <img src="assets/mrc_cruise_map.svg" alt="Cruise map" />
     </div>
   );
