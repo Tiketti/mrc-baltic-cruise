@@ -134,13 +134,16 @@ export const cities = [
     date: "20.4.2025",
     imageUrlSmall: "/assets/helsinki_small.webp",
     imageUrl: "/assets/helsinki.webp",
-    agenda: `Run in Helsinki hosted by MRC Helsinki. Starting at 12:30 from SalamaNation.
+    agenda: `11:00 Beer Mile within a short distance from SalamaNation - start the day off with a bang!
+    Individual and relay options available.
 
-    Post-run beers and party at SalamaNation.
-
-    Optional beer mile (to be confirmed).
-
-    Awards and farewells until we meet again.
+    12:30 Sunday run starting from SalamaNation.
+    - 6k: hungover pace
+    - 8k: easy pace
+    - 8k: semi-easy pace
+    Bag drop available. Arrive a bit early for a pre-run briefing.
+    
+    :beer: Fin(n)isher's Party at SalamaNation.
 
     Suggested boat for Stockholm-bound runners: 17:00 Silja Serenade to Stockholm. Arrives to STO on Monday 10:00.
     
@@ -195,5 +198,32 @@ export const hostItems = [
       "Captains Heidi, Milla, Perttu and Rasmus are at your service.",
       "We're happy to have you join us!",
     ],
+  },
+];
+
+export const events = [
+  {
+    id: "main",
+    title: "Main Strava event",
+    name: "Main event",
+    url: "https://www.strava.com/clubs/315734/group_events/1892944",
+  },
+  {
+    id: "stockholm",
+    title: "Stockholm Strava event",
+    name: "Stockholm",
+    url: "https://www.strava.com/clubs/302996/group_events/1948062",
+  },
+  {
+    id: "helsinki-beer-mile",
+    title: "Helsinki Beer Mile Strava event",
+    name: "HEL Beer Mile",
+    url: "https://www.strava.com/clubs/315734/group_events/1963981",
+  },
+  {
+    id: "helsinki-run",
+    title: "Helsinki Run Strava event",
+    name: "HEL Run",
+    url: "https://www.strava.com/clubs/315734/group_events/1963982",
   },
 ];
