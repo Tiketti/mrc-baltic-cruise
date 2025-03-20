@@ -121,9 +121,19 @@ export const cities = [
     date: "19.4.2025",
     imageUrlSmall: "/assets/tallinn_small.webp",
     imageUrl: "/assets/tallinn.webp",
-    agenda: `Run in Tallinn hosted by Pühaste jooksuklubi.
+    agenda: `The plan: discover the city and local breweries. Hosted by Pühaste jooksuklubi.
 
-    Post-run beers and party.
+    13:00 Gathering at Põhjala Taproom
+    13:15 Fun starts
+    13:45-14:20 :beer: Mikkeller Old Town Tallinn
+    14:20-15:00 on the road again
+    15:00-15:40 :beer: Pühaste Tallinn Taproom
+    15:40-16:20 on the road again
+    16:20-17:00 :beer: Vaat Brewery &Taproom
+    17:00-17:30 back to Põhjala Taproom
+    17:30 :beer: sauna, food, fun, brewery tour
+
+    Total run distance approximately 13K, pace nice and slow.
 
     Boat 22:30 Tallink Silja Megastar to Helsinki (2 hour trip, arrives 00:30)
 
