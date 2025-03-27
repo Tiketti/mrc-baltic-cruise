@@ -58,4 +58,43 @@ test.describe("Smoke tests", () => {
     // Check if dialog is closed
     await expect(dialog).not.toBeVisible();
   });
+
+  test("should switch between host sections", async ({ page }) => {
+    await page.goto("/");
+
+    // Check initial state (Stockholm)
+    await expect(
+      page.getByRole("heading", { name: "MRC Stockholm" }),
+    ).toBeVisible();
+    await expect(
+      page.getByText(/The first attempt to start MRC Stockholm/),
+    ).toBeVisible();
+
+    // Switch to Tallinn
+    await page.getByRole("tab", { name: "Tallinn" }).click();
+    await expect(
+      page.getByRole("heading", { name: "Pühaste Jooksuklubi" }),
+    ).toBeVisible();
+    await expect(
+      page.getByText(/Our Club is a Phenomenon of Its Own/),
+    ).toBeVisible();
+
+    // Switch to Helsinki
+    await page.getByRole("tab", { name: "Helsinki" }).click();
+    await expect(
+      page.getByRole("heading", { name: "MRC Helsinki" }),
+    ).toBeVisible();
+    await expect(
+      page.getByText(/You don't have to be a runner to join us/),
+    ).toBeVisible();
+
+    // Switch back to Stockholm
+    await page.getByRole("tab", { name: "Stockholm" }).click();
+    await expect(
+      page.getByRole("heading", { name: "MRC Stockholm" }),
+    ).toBeVisible();
+    await expect(
+      page.getByText(/The first attempt to start MRC Stockholm/),
+    ).toBeVisible();
+  });
 });
