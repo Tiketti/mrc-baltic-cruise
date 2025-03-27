@@ -1,0 +1,22 @@
+[build]
+  command = "pnpm build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+  PNPM_VERSION = "9"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Branch deploy contexts
+[context.branch-deploy]
+  command = "pnpm test && pnpm build"
+
+# Deploy preview contexts (PRs)
+[context.deploy-preview]
+  command = "pnpm test && pnpm build"
+
+# Production deploy contexts
+[context.production]
+  command = "pnpm test && pnpm build" 
