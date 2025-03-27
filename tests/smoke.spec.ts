@@ -30,4 +30,32 @@ test.describe("Smoke tests", () => {
       page.getByText(/It's three cities in three days/),
     ).toBeVisible();
   });
+
+  test("should show and close city agenda dialog", async ({ page }) => {
+    await page.goto("/");
+
+    // Click "View Agenda" for Stockholm
+    const stockholmCard = page
+      .getByRole("heading", { name: "Stockholm" })
+      .locator("..");
+    await stockholmCard.getByRole("button", { name: "View Agenda" }).click();
+
+    // Check if dialog is visible with correct content
+    const dialog = page.getByRole("dialog");
+
+    await expect(dialog).toBeVisible();
+    await expect(
+      dialog.getByRole("heading", { name: "STOCKHOLM" }),
+    ).toBeVisible();
+    await expect(dialog.getByText(/11:50 bag drop open/)).toBeVisible();
+
+    // Check if date is formatted correctly
+    await expect(dialog.getByText(/Friday, April 18th/)).toBeVisible();
+
+    // Close dialog
+    await dialog.getByRole("button", { name: "Close" }).click();
+
+    // Check if dialog is closed
+    await expect(dialog).not.toBeVisible();
+  });
 });
