@@ -32,19 +32,22 @@ We try to speak the Mikkeller brewery design language which – to a degree – 
 ## Implementation TODO List
 
 ### Phase 1: Core Structure & Data
-- [ ] Create brewery run page component at `/brewery-run` route
-- [ ] Define data structure for brewery stops (location, arrival/departure times, distances)
-- [ ] Create sample data for Helsinki brewery run
-- [ ] Design mobile-first brewery stop cards (similar to city cards but optimized for mobile)
-- [ ] Add brewery run route to navigation
+- [x] Create brewery run page component at `/brewery-run` route
+- [x] Define data structure for brewery stops (location, arrival/departure times, distances)
+- [x] Create sample data for Helsinki brewery run
+- [x] Design mobile-first brewery stop cards (similar to city cards but optimized for mobile)
+- [x] Add brewery run route to navigation
 
 ### Phase 2: Schedule Features
-- [ ] Build schedule timeline component showing all stops
-- [ ] Display location details (name, address, maybe a photo)
-- [ ] Show arrival/departure times with clear formatting
-- [ ] Calculate and display distances between stops
-- [ ] Add "current stop" indicator for during-event usage
-- [ ] Implement time-based progress tracking (optional)
+- [x] Build schedule timeline component showing all stops
+- [x] Display location details (name, address, maybe a photo)
+- [x] Show arrival/departure times with clear formatting
+- [x] Calculate and display distances between stops
+- [x] Add "current stop" indicator for during-event usage
+- [x] Implement time-based progress tracking with visual highlighting
+- [x] Add brewery logos with multi-format support and CSS styling
+- [x] Remove runner emojis for cleaner brand-appropriate design
+- [x] Add mock time query parameter for testing (?mockTime=13:00)
 
 ### Phase 3: Map Integration
 - [ ] Research free map embed options (Strava, OSM, Google Maps)
