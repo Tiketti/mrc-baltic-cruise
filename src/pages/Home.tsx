@@ -10,22 +10,31 @@ export const Home = () => {
         <h1 className="mb-4 font-bold text-4xl text-gray-900 md:text-6xl">
           Welcome to the New Site
         </h1>
-        
+
         <p className="mx-auto mb-8 max-w-2xl text-gray-600 text-xl">
-          This is a placeholder for the new root site. The original Baltic Cruise site 
-          has been preserved and is still accessible.
+          This is a placeholder for the new root site. The original Baltic
+          Cruise site has been preserved and is still accessible.
         </p>
-        
+
         <div className="space-y-4">
-          <Link 
-            to="/baltic-cruise"
-            className="inline-block rounded-lg bg-blue-600 px-8 py-3 font-medium text-white transition-colors hover:bg-blue-700"
-          >
-            View Baltic Cruise Site
-          </Link>
-          
+          <div className="flex flex-col space-y-3 sm:flex-row sm:space-x-4 sm:space-y-0">
+            <Link
+              to="/brewery-run"
+              className="inline-block rounded-lg bg-green-600 px-8 py-3 font-medium text-white transition-colors hover:bg-green-700"
+            >
+              🍺 Brewery Run 2025
+            </Link>
+            <Link
+              to="/baltic-cruise"
+              className="inline-block rounded-lg bg-blue-600 px-8 py-3 font-medium text-white transition-colors hover:bg-blue-700"
+            >
+              🚢 Baltic Cruise
+            </Link>
+          </div>
+
           <p className="text-gray-500 text-sm">
-            The original site is now available at <code className="rounded bg-gray-200 px-2 py-1">/baltic-cruise</code>
+            Check out the brewery run schedule or visit the archived Baltic
+            Cruise site
           </p>
         </div>
 
@@ -34,8 +43,9 @@ export const Home = () => {
             Ready for Development
           </h2>
           <p className="text-gray-600">
-            This new root site is ready for you to build whatever comes next. 
-            All the original components, styles, and assets are preserved and can be reused.
+            This new root site is ready for you to build whatever comes next.
+            All the original components, styles, and assets are preserved and
+            can be reused.
           </p>
         </div>
       </div>
