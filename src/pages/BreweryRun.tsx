@@ -33,7 +33,7 @@ export const BreweryRun = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
-      <div className="mx-auto max-w-md px-4 py-8">
+      <div className="mx-auto max-w-md px-4 pt-20 pb-8">
         <h1 className="mb-8 text-center font-bold text-3xl tracking-wider">
           BREWERY RUN 2025
         </h1>

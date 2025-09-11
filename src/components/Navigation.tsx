@@ -4,9 +4,9 @@ export const Navigation = () => {
   const location = useLocation();
 
   return (
-    <nav className="fixed top-4 left-4 z-50">
+    <nav className="fixed top-4 right-4 left-4 z-50">
       <div className="rounded-lg bg-white/90 px-4 py-2 shadow-lg backdrop-blur-sm">
-        <div className="flex space-x-2">
+        <div className="flex justify-center space-x-4">
           <Link
             to="/"
             className={`rounded px-2 py-1 font-medium text-xs transition-colors ${
