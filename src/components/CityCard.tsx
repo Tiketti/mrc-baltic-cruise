@@ -6,7 +6,7 @@ interface CityCardProps {
   onClick: () => void;
 }
 
-const CityCard = ({
+export const CityCard = ({
   city,
   date,
   imageUrlSmall,
@@ -34,5 +34,3 @@ const CityCard = ({
     </div>
   );
 };
-
-export default CityCard;

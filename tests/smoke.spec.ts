@@ -1,8 +1,8 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 test.describe("Smoke tests", () => {
   test("should load the main page", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/baltic-cruise");
 
     // Check if the page has loaded
     await expect(page).toHaveTitle(/MRC Baltic Cruise/);
@@ -16,7 +16,7 @@ test.describe("Smoke tests", () => {
   });
 
   test("should have working FAQ section", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/baltic-cruise");
 
     // Check if FAQ section exists and has content
     const faqTitle = page.getByText("What is it?");
@@ -32,7 +32,7 @@ test.describe("Smoke tests", () => {
   });
 
   test("should show and close city agenda dialog", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/baltic-cruise");
 
     // Click "View Agenda" for Stockholm
     const stockholmCard = page
@@ -60,7 +60,7 @@ test.describe("Smoke tests", () => {
   });
 
   test("should switch between host sections", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("/baltic-cruise");
 
     // Check initial state (Stockholm)
     await expect(
