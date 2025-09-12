@@ -1,10 +1,13 @@
+import { useState } from "react";
 import { breweryStops } from "../breweryData";
-import { BreweryCard } from "../components/BreweryCard";
+import { MapTab } from "../components/MapTab";
+import { ScheduleTab } from "../components/ScheduleTab";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { calculateCurrentStatus } from "../utils/timeCalculations";
 
 export const BreweryRun = () => {
   useDocumentTitle("Brewery Run 2025 | MRC Helsinki");
+  const [activeTab, setActiveTab] = useState<"schedule" | "map">("schedule");
 
   // Parse mock time from URL query parameter for testing
   // Format: ?mockTime=13:00 (just the time, assumes today's date)
@@ -38,30 +41,43 @@ export const BreweryRun = () => {
           BREWERY RUN 2025
         </h1>
 
-        <div className="space-y-0">
-          {breweryStops.map((stop, index) => (
-            <BreweryCard
-              key={stop.id}
-              stop={stop}
-              isLast={index === breweryStops.length - 1}
-              isCurrentStop={index === currentStopIndex}
-              isCurrentTransition={index === currentTransitionIndex}
-            />
-          ))}
+        {/* Tab Navigation */}
+        <div className="mb-6 flex rounded-lg bg-gray-800 p-1">
+          <button
+            type="button"
+            onClick={() => setActiveTab("schedule")}
+            className={`flex-1 rounded-md border-0 px-4 py-2 text-center font-medium text-sm outline-none transition-colors ${
+              activeTab === "schedule"
+                ? "bg-brand-blue text-white shadow-sm"
+                : "bg-transparent text-gray-300 hover:text-white"
+            }`}
+            style={activeTab === "schedule" ? { color: "white" } : undefined}
+          >
+            Schedule
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab("map")}
+            className={`flex-1 rounded-md border-0 px-4 py-2 text-center font-medium text-sm outline-none transition-colors ${
+              activeTab === "map"
+                ? "bg-brand-blue text-white shadow-sm"
+                : "bg-transparent text-gray-300 hover:text-white"
+            }`}
+            style={activeTab === "map" ? { color: "white" } : undefined}
+          >
+            Map
+          </button>
         </div>
 
-        {/* Footer info */}
-        <div className="mt-8 text-center text-gray-400 text-sm">
-          <p>
-            Total Distance:{" "}
-            {breweryStops.reduce(
-              (total, stop) => total + (stop.distanceToNext || 0),
-              0,
-            )}{" "}
-            km
-          </p>
-          <p className="mt-2">Helsinki • {new Date().getFullYear()}</p>
-        </div>
+        {/* Tab Content */}
+        {activeTab === "schedule" ? (
+          <ScheduleTab
+            currentStopIndex={currentStopIndex}
+            currentTransitionIndex={currentTransitionIndex}
+          />
+        ) : (
+          <MapTab />
+        )}
       </div>
     </div>
   );
