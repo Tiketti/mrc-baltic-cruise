@@ -62,7 +62,7 @@ export const breweryStops: BreweryStop[] = [
   {
     id: "coolhead",
     name: "CoolHead Brew",
-    logo: "/assets/brewery-logos/coolhead.jpg",
+    logo: "/assets/brewery-logos/coolhead.png",
     arriveTime: "17:30",
     // No departure time - final stop
     address: "Helsinki, Finland",
