@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 // import { Navigation } from "./components/Navigation";
 import { BalticCruise } from "./pages/BalticCruise";
 import { BreweryRun } from "./pages/BreweryRun";
@@ -10,8 +10,13 @@ function App() {
       {/* Navigation temporarily hidden for brewery run focus */}
       {/* <Navigation /> */}
       <Routes>
-        <Route path="/" element={<Home />} />
+        {/* Redirect root to brewery run for focused launch */}
+        <Route path="/" element={<Navigate to="/brewery-run" replace />} />
+
+        {/* Preserved routes - accessible but not linked */}
+        <Route path="/home" element={<Home />} />
         <Route path="/baltic-cruise" element={<BalticCruise />} />
+
         <Route path="/brewery-run" element={<BreweryRun />} />
       </Routes>
     </>
