@@ -1,13 +1,13 @@
-import { useState } from "react";
 import { breweryStops } from "../breweryData";
-import { MapTab } from "../components/MapTab";
 import { ScheduleTab } from "../components/ScheduleTab";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { calculateCurrentStatus } from "../utils/timeCalculations";
 
 export const BreweryRun = () => {
   useDocumentTitle("Brewery Run 2025 | MRC Helsinki");
-  const [activeTab, setActiveTab] = useState<"schedule" | "map">("schedule");
+
+  // Tab functionality temporarily hidden for focused brewery run launch
+  // const [activeTab, setActiveTab] = useState<"schedule" | "map">("schedule");
 
   // Parse mock time from URL query parameter for testing
   // Format: ?mockTime=13:00 (just the time, assumes today's date)
@@ -36,12 +36,13 @@ export const BreweryRun = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
-      <div className="mx-auto max-w-md px-4 pt-20 pb-8">
+      <div className="mx-auto max-w-md px-4 py-8">
         <h1 className="mb-8 text-center font-bold text-3xl tracking-wider">
           BREWERY RUN 2025
         </h1>
 
-        {/* Tab Navigation */}
+        {/* Tab Navigation - temporarily hidden for focused launch */}
+        {/* 
         <div className="mb-6 flex rounded-lg bg-gray-800 p-1">
           <button
             type="button"
@@ -68,16 +69,13 @@ export const BreweryRun = () => {
             Map
           </button>
         </div>
+        */}
 
-        {/* Tab Content */}
-        {activeTab === "schedule" ? (
-          <ScheduleTab
-            currentStopIndex={currentStopIndex}
-            currentTransitionIndex={currentTransitionIndex}
-          />
-        ) : (
-          <MapTab />
-        )}
+        {/* Schedule Content - always visible for focused launch */}
+        <ScheduleTab
+          currentStopIndex={currentStopIndex}
+          currentTransitionIndex={currentTransitionIndex}
+        />
       </div>
     </div>
   );
