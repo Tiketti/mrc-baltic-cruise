@@ -1,13 +1,13 @@
+import { useState } from "react";
 import { breweryStops } from "../breweryData";
+import { MapTab } from "../components/MapTab";
 import { ScheduleTab } from "../components/ScheduleTab";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { calculateCurrentStatus } from "../utils/timeCalculations";
 
 export const BreweryRun = () => {
   useDocumentTitle("Brewery Run 2025 | MRC Helsinki");
-
-  // Tab functionality temporarily hidden for focused brewery run launch
-  // const [activeTab, setActiveTab] = useState<"schedule" | "map">("schedule");
+  const [activeTab, setActiveTab] = useState<"schedule" | "map">("schedule");
 
   // Parse mock time from URL query parameter for testing
   // Format: ?mockTime=13:00 (just the time, assumes today's date)
@@ -41,8 +41,6 @@ export const BreweryRun = () => {
           BREWERY RUN 2025
         </h1>
 
-        {/* Tab Navigation - temporarily hidden for focused launch */}
-        {/* 
         <div className="mb-6 flex rounded-lg bg-gray-800 p-1">
           <button
             type="button"
@@ -69,13 +67,15 @@ export const BreweryRun = () => {
             Map
           </button>
         </div>
-        */}
 
-        {/* Schedule Content - always visible for focused launch */}
-        <ScheduleTab
-          currentStopIndex={currentStopIndex}
-          currentTransitionIndex={currentTransitionIndex}
-        />
+        {activeTab === "schedule" ? (
+          <ScheduleTab
+            currentStopIndex={currentStopIndex}
+            currentTransitionIndex={currentTransitionIndex}
+          />
+        ) : (
+          <MapTab />
+        )}
       </div>
     </div>
   );
