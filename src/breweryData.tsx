@@ -11,6 +11,9 @@ export interface BreweryStop {
   website?: string;
 }
 
+// Event date: October 11, 2025 at 12:00 (first brewery meet time)
+export const eventDate = new Date(2025, 9, 11, 12, 0, 0); // Month is 0-indexed (9 = October)
+
 export const breweryStops: BreweryStop[] = [
   {
     id: "masis",

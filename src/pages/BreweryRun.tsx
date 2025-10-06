@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { breweryStops } from "../breweryData";
+import { breweryStops, eventDate } from "../breweryData";
+import { Countdown } from "../components/Countdown";
 import { MapTab } from "../components/MapTab";
 import { ScheduleTab } from "../components/ScheduleTab";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
@@ -37,11 +38,15 @@ export const BreweryRun = () => {
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <div className="mx-auto max-w-md px-4 py-8">
-        <h1 className="mb-8 text-center font-bold text-3xl tracking-wider">
+        <h1 className="mb-4 text-center font-bold text-3xl tracking-wider">
           BREWERY RUN 2025
         </h1>
 
-        <div className="mb-6 flex rounded-lg bg-gray-800 p-1">
+        <div className="mb-4">
+          <Countdown targetDate={eventDate} />
+        </div>
+
+        <div className="mb-4 flex rounded-lg bg-gray-800 p-1">
           <button
             type="button"
             onClick={() => setActiveTab("schedule")}

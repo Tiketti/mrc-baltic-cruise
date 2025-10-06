@@ -15,7 +15,10 @@ export default {
       },
     },
     extend: {
-      fontFamily: { sans: ["Inter var", "sans-serif"] },
+      fontFamily: {
+        sans: ["Inter var", "sans-serif"],
+        mikkelwind: ["MikkelWind", "sans-serif"],
+      },
       keyframes: {
         "accordion-down": {
           from: { height: 0 },
