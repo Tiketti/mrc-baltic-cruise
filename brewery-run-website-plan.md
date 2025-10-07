@@ -50,28 +50,43 @@ We try to speak the Mikkeller brewery design language which – to a degree – 
 - [x] Add mock time query parameter for testing (?mockTime=13:00)
 
 ### Phase 3: Map Integration
-- [ ] Research free map embed options (Strava, OSM, Google Maps)
-- [ ] Implement basic route map embed
-- [ ] Test map responsiveness on mobile devices
-- [ ] Add brewery location markers on map
+- [x] Research free map embed options (Strava, OSM, Google Maps, Komoot, Garmin)
+- [x] Implement basic route map embed (Garmin Connect)
+- [x] Test map responsiveness on mobile devices
+- [x] Add tabbed interface for Schedule/Map switching
+- [x] Implement full-height map layout
+- [x] Add responsive breakpoints for tablet/desktop (2/3 width)
+- [ ] Add brewery location markers on map (handled by Garmin embed)
 - [ ] Consider offline map functionality for mobile
 
 ### Phase 4: Mobile Optimization
-- [ ] Test and optimize all components for mobile viewport
-- [ ] Implement touch-friendly interactions
+- [x] Test and optimize all components for mobile viewport
+- [x] Implement touch-friendly interactions (tab buttons, cards)
+- [x] Mobile-first responsive design with tablet/desktop enhancements
 - [ ] Add PWA capabilities (service worker, manifest)
 - [ ] Test performance on mobile networks
 - [ ] Add "Add to Home Screen" functionality
 
 ### Phase 5: Live Features (Stretch Goals)
-- [ ] Research Strava/Garmin API integration possibilities
-- [ ] Implement live tracking display (if feasible)
-- [ ] Add real-time updates capability
-- [ ] Consider WebSocket integration for live updates
+- [x] Research Strava/Garmin API integration possibilities
+- [x] Implement live tracking display (Garmin LiveTrack via Cloudflare Worker + KV)
+- [x] Add real-time updates capability (admin dashboard for updating LiveTrack URL)
+- [x] Serverless architecture (no WebSocket needed - Cloudflare Worker handles it)
 
 ### Phase 6: Polish & Launch
-- [ ] Extract and adapt Mikkeller design elements from Baltic Cruise site
-- [ ] Implement consistent branding and typography
-- [ ] Add loading states and error handling
+- [x] Extract and adapt Mikkeller design elements from Baltic Cruise site
+- [x] Implement consistent branding and typography (MikkelWind font, brand colors)
+- [x] Add countdown timer to event
+- [x] Implement custom slow pulse animations for highlighting
+- [x] Clean component architecture (extracted tab components)
+- [x] Add custom hooks for reusable functionality (useLiveTrackUrl, useDocumentTitle)
+- [x] Update Open Graph metadata for brewery run
+- [x] Document mockTime testing parameter in README
+- [x] Add Playwright browser caching to CI/CD
+- [x] Responsive layout for multiple screen sizes
+- [x] Add loading states and error handling (toast notifications, loading states in map)
+- [x] Create admin dashboard for LiveTrack URL management
+- [x] Extract constants to centralized module
+- [x] Add comprehensive architecture documentation (Mermaid diagram in README)
 - [ ] Performance optimization and testing
 - [ ] Final mobile device testing across different screen sizes
