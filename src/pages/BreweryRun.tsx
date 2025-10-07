@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { breweryStops, eventDate } from "../breweryData";
 import { Countdown } from "../components/Countdown";
 import { MapTab } from "../components/MapTab";
@@ -8,7 +8,20 @@ import { calculateCurrentStatus } from "../utils/timeCalculations";
 
 export const BreweryRun = () => {
   useDocumentTitle("Brewery Run 2025 | MRC Helsinki");
-  const [activeTab, setActiveTab] = useState<"schedule" | "map">("schedule");
+
+  // Initialize tab from URL hash (#schedule or #map)
+  const getInitialTab = (): "schedule" | "map" => {
+    const hash = window.location.hash.slice(1);
+
+    return hash === "map" ? "map" : "schedule";
+  };
+
+  const [activeTab, setActiveTab] = useState<"schedule" | "map">(getInitialTab);
+
+  // Update hash when tab changes
+  useEffect(() => {
+    window.location.hash = activeTab;
+  }, [activeTab]);
 
   // Parse mock time from URL query parameter for testing
   // Format: ?mockTime=13:00 (just the time, assumes today's date)
