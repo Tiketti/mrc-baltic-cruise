@@ -9,6 +9,7 @@ export const Admin = () => {
 
   const [url, setUrl] = useState("");
   const [password, setPassword] = useState("");
+  const [isLive, setIsLive] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -24,7 +25,7 @@ export const Admin = () => {
           "Content-Type": "application/json",
           "X-Admin-Password": password,
         },
-        body: JSON.stringify({ url }),
+        body: JSON.stringify({ url, isLive }),
       });
 
       if (!response.ok) {
@@ -35,6 +36,7 @@ export const Admin = () => {
       toast.success("LiveTrack URL updated successfully!", { id: toastId });
       setUrl("");
       setPassword("");
+      setIsLive(false);
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "Failed to update URL";
@@ -109,10 +111,32 @@ export const Admin = () => {
                 id="url"
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
-                placeholder="https://livetrack.garmin.com/session/..."
-                required
+                placeholder="https://livetrack.garmin.com/session/... (optional if just updating status)"
                 className="min-w-0 rounded-lg bg-gray-700 px-4 py-3 text-white placeholder-gray-400 outline outline-1 outline-brand-blue transition-all focus:border-brand-blue focus:ring-2 focus:ring-brand-blue"
               />
+            </div>
+
+            <div className="flex items-start gap-3 rounded-lg bg-gray-700/30 p-4">
+              <input
+                type="checkbox"
+                id="isLive"
+                checked={isLive}
+                onChange={(e) => setIsLive(e.target.checked)}
+                className="mt-1 h-5 w-24 cursor-pointer rounded border-2 border-solid bg-gray-600 text-brand-blue transition-colors checked:border-brand-blue checked:bg-brand-blue focus:ring-2 focus:ring-brand-blue focus:ring-offset-2 focus:ring-offset-gray-800"
+              />
+              <div className="flex flex-col">
+                <label
+                  htmlFor="isLive"
+                  className="cursor-pointer font-medium text-sm"
+                >
+                  Event is currently active
+                </label>
+                <p className="mt-1 text-gray-400 text-xs">
+                  Check this when people are actively running. Uncheck when
+                  everyone has finished but might still be at the final venue.
+                  The "Live" tab will hide automatically after 7 hours.
+                </p>
+              </div>
             </div>
 
             <div className="flex flex-col">
@@ -147,11 +171,18 @@ export const Admin = () => {
           <div className="mt-6 rounded bg-gray-700/50 p-4 text-sm">
             <p className="mb-2 font-semibold">Instructions:</p>
             <ol className="list-inside list-decimal space-y-1 text-gray-300">
-              <li>Start Garmin LiveTrack on your watch</li>
-              <li>Check your email for the LiveTrack link</li>
-              <li>Copy the full URL from the email</li>
-              <li>Paste it above and enter your admin password</li>
-              <li>Hit update and the map will go live!</li>
+              <li>
+                <strong>Starting the event:</strong> Paste LiveTrack URL, check
+                "Event is active", enter password, update
+              </li>
+              <li>
+                <strong>Finishing the run:</strong> Leave URL empty, uncheck
+                "Event is active", enter password, update
+              </li>
+              <li>
+                <strong>Note:</strong> The Live tab will auto-hide 7 hours after
+                your last update
+              </li>
             </ol>
           </div>
         </div>

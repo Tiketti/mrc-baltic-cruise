@@ -1,27 +1,53 @@
 import { useEffect, useState } from "react";
+import { Eye } from "lucide-react";
 import { breweryStops, eventDate } from "../breweryData";
 import { Countdown } from "../components/Countdown";
 import { MapTab } from "../components/MapTab";
 import { ScheduleTab } from "../components/ScheduleTab";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
+import { useLiveTrackUrl } from "../hooks/useLiveTrackUrl";
 import { calculateCurrentStatus } from "../utils/timeCalculations";
+import { FALLBACK_MAP_URL } from "../constants";
+
+type TabType = "schedule" | "route" | "live";
 
 export const BreweryRun = () => {
   useDocumentTitle("Brewery Run 2025 | MRC Helsinki");
 
-  // Initialize tab from URL hash (#schedule or #map)
-  const getInitialTab = (): "schedule" | "map" => {
+  const {
+    liveTrackUrl,
+    isLiveTrackRecent,
+    isLive,
+    loading: liveTrackLoading,
+  } = useLiveTrackUrl();
+
+  // Initialize tab from URL hash
+  const getInitialTab = (): TabType => {
     const hash = window.location.hash.slice(1);
 
-    return hash === "map" ? "map" : "schedule";
+    if (hash === "route" || hash === "map") {
+      return "route";
+    }
+    if (hash === "live") {
+      return "live";
+    }
+
+    return "schedule";
   };
 
-  const [activeTab, setActiveTab] = useState<"schedule" | "map">(getInitialTab);
+  const [activeTab, setActiveTab] = useState<TabType>(getInitialTab);
 
   // Update hash when tab changes
   useEffect(() => {
     window.location.hash = activeTab;
   }, [activeTab]);
+
+  // If live tab is active but live track is no longer recent, switch to route
+  useEffect(() => {
+    if (activeTab === "live" && !isLiveTrackRecent) {
+      setActiveTab("route");
+    }
+  }, [activeTab, isLiveTrackRecent]);
 
   // Parse mock time from URL query parameter for testing
   // Format: ?mockTime=13:00 (just the time, assumes today's date)
@@ -74,16 +100,39 @@ export const BreweryRun = () => {
           </button>
           <button
             type="button"
-            onClick={() => setActiveTab("map")}
+            onClick={() => setActiveTab("route")}
             className={`flex-1 rounded-md border-0 px-4 py-2 text-center font-medium text-sm outline-none transition-colors ${
-              activeTab === "map"
+              activeTab === "route"
                 ? "bg-brand-blue text-white shadow-sm"
                 : "bg-transparent text-gray-300 hover:text-white"
             }`}
-            style={activeTab === "map" ? { color: "white" } : undefined}
+            style={activeTab === "route" ? { color: "white" } : undefined}
           >
-            Map
+            Route
           </button>
+          {isLiveTrackRecent && liveTrackUrl && (
+            <button
+              type="button"
+              onClick={() => setActiveTab("live")}
+              className={`flex-1 rounded-md border-0 px-4 py-2 text-center font-medium text-sm outline-none transition-colors ${
+                activeTab === "live"
+                  ? "bg-brand-blue text-white shadow-sm"
+                  : "bg-transparent text-gray-300 hover:text-white"
+              }`}
+              style={activeTab === "live" ? { color: "white" } : undefined}
+            >
+              <span className="inline-flex items-center gap-1.5">
+                Live
+                {isLive && (
+                  <Eye
+                    className="animate-pulse text-red-500"
+                    size={16}
+                    strokeWidth={2.5}
+                  />
+                )}
+              </span>
+            </button>
+          )}
         </div>
 
         {activeTab === "schedule" ? (
@@ -92,7 +141,15 @@ export const BreweryRun = () => {
             currentTransitionIndex={currentTransitionIndex}
           />
         ) : (
-          <MapTab />
+          <MapTab
+            url={
+              activeTab === "live" && liveTrackUrl
+                ? liveTrackUrl
+                : FALLBACK_MAP_URL
+            }
+            title={activeTab === "live" ? "Live Track" : "Route Map"}
+            loading={liveTrackLoading}
+          />
         )}
       </div>
     </div>

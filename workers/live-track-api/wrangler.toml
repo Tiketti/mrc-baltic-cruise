@@ -1,0 +1,13 @@
+name = "livetrack-api"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+# KV namespace binding
+[[kv_namespaces]]
+binding = "BREWERY_RUN_LIVETRACK"
+id = "8299760b467846a6a74f1bcba0996cc7"
+
+# Environment variables (secrets should be set via wrangler secret put)
+[vars]
+# ADMIN_PASSWORD is set via: wrangler secret put ADMIN_PASSWORD
+
