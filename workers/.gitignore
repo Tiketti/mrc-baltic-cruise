@@ -1,0 +1,10 @@
+# Wrangler
+.wrangler/
+.dev.vars
+*.log
+
+# Environment files
+.env
+.env.local
+.env.production
+

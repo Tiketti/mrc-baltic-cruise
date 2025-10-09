@@ -1,13 +1,15 @@
-import { useLiveTrackUrl } from "../hooks/useLiveTrackUrl";
+interface MapTabProps {
+  url: string;
+  title: string;
+  loading: boolean;
+}
 
-export const MapTab = () => {
-  const { url, loading } = useLiveTrackUrl();
-
+export const MapTab = ({ url, title, loading }: MapTabProps) => {
   return (
     <div className="flex h-[calc(100vh-12rem)] flex-col pb-4">
       <div className="flex flex-1 flex-col overflow-hidden rounded-lg bg-gray-800 md:mx-auto md:w-2/3 md:max-w-4xl">
         <h2 className="px-4 pt-4 pb-2 font-semibold text-lg">
-          Route Map{" "}
+          {title}{" "}
           {loading && (
             <span className="text-gray-400 text-xs">(loading...)</span>
           )}
@@ -23,7 +25,7 @@ export const MapTab = () => {
               src={url}
               width="100%"
               height="100%"
-              title="Course Embed"
+              title={title}
               className="h-full w-full"
             />
           )}

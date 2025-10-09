@@ -16,8 +16,21 @@ export default {
 
     if (request.method === "GET") {
       const url = await env.BREWERY_RUN_LIVETRACK.get("livetrack_url");
+      const timestamp = await env.BREWERY_RUN_LIVETRACK.get(
+        "livetrack_timestamp",
+      );
+      const isLive = await env.BREWERY_RUN_LIVETRACK.get("is_live");
 
-      return new Response(JSON.stringify({ url }), { headers: corsHeaders });
+      return new Response(
+        JSON.stringify({
+          url,
+          timestamp,
+          isLive: isLive === "true",
+        }),
+        {
+          headers: corsHeaders,
+        },
+      );
     }
 
     if (request.method === "POST") {
@@ -30,9 +43,17 @@ export default {
         });
       }
 
-      const { url } = await request.json();
+      const { url, isLive } = await request.json();
+      const timestamp = new Date().toISOString();
 
-      await env.BREWERY_RUN_LIVETRACK.put("livetrack_url", url);
+      // If URL is provided, update it
+      if (url) {
+        await env.BREWERY_RUN_LIVETRACK.put("livetrack_url", url);
+      }
+
+      // Always update timestamp and isLive status (timestamp tracks any update)
+      await env.BREWERY_RUN_LIVETRACK.put("livetrack_timestamp", timestamp);
+      await env.BREWERY_RUN_LIVETRACK.put("is_live", isLive ? "true" : "false");
 
       return new Response(JSON.stringify({ success: true }), {
         headers: corsHeaders,
