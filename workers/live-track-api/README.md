@@ -134,10 +134,11 @@ Finishing event (no need to re-send URL):
 ## Notes
 
 - The timestamp is automatically updated on every POST request (whether you're setting a URL or just toggling status)
-- The 7-hour auto-hide timer resets with each admin update
-- URLs/events older than 7 hours from last update are considered expired (configured in frontend as `LIVE_TRACK_MAX_AGE_HOURS`)
+- When `isLive` is `true`: Visitors see the Live tab with a pulsing eye icon and real-time tracking
+- When `isLive` is `false`: Visitors see a "Event Finished" message (with timestamp) for 2 hours, then the Live tab disappears
+- The 2-hour window is configured in the frontend as `EVENT_FINISHED_VISIBLE_HOURS`
+- URLs/events older than 7 hours from last update are completely hidden (configured as `LIVE_TRACK_MAX_AGE_HOURS`)
 - CORS is enabled for all origins
-- The `isLive` boolean controls whether the pulsing eye icon appears in the frontend
 
 ## Troubleshooting
 

@@ -112,22 +112,22 @@ The admin interface (`/admin`) supports two operations:
 **Design Choices:**
 
 - **Pulsing Eye Icon**: Appears only when "Event is active" is checked, signaling to visitors that people are actively running right now
-- **Live Tab Persistence**: After unchecking "Event is active", the Live tab remains visible for up to 7 hours so visitors can check if the group is still at the final brewery
-- **Timestamp Reset**: The 7-hour countdown resets with every admin update, so if you toggle the status at 6pm, the tab stays visible until 1am
+- **Two-Hour "Just Finished" Window**: After unchecking "Event is active", the Live tab shows a custom "Event Finished" message (with timestamp) for 2 hours, then disappears completely
+- **No Awkward Garmin Messages**: Instead of showing Garmin's "session has ended" error, visitors see a friendly message indicating the group may still be at the final brewery
 - **Optional URL Field**: When just updating the event status, you can leave the URL field empty - the system keeps the existing URL
 - **Three Tab States**: 
-  - Schedule + Route only (before event)
-  - Schedule + Route + Live with 👁️ (event active)
-  - Schedule + Route + Live without 👁️ (event finished, < 7h ago)
+  - Schedule + Route only (before event or > 2h after)
+  - Schedule + Route + Live with 👁️ (event actively running)
+  - Schedule + Route + Live with "Event Finished" message (< 2h after finish)
 
 **Visitor Experience:**
 
-The map section adapts to event status:
+The map section intelligently adapts to event status:
 
 - **Before event starts**: Only "Schedule" and "Route" tabs visible
-- **Event is live** (actively running): "Live" tab appears with pulsing red eye icon - location updates in real-time
-- **Event finished** (< 7 hours ago): "Live" tab visible without pulsing eye - shows last known location (useful if group is still drinking at final venue)
-- **Event ended** (> 7 hours ago): "Live" tab disappears, back to "Schedule" and "Route" only
+- **Event is live** (actively running): "Live" tab appears with pulsing red eye icon 👁️ - location updates in real-time via embedded Garmin LiveTrack
+- **Event just finished** (< 2 hours ago): "Live" tab shows "Event Finished" message with timestamp - indicates the group may still be at the final brewery
+- **Event ended** (> 2 hours ago): "Live" tab disappears completely, back to "Schedule" and "Route" only
 
 **Fallback Behavior:**
 
@@ -137,7 +137,7 @@ The system gracefully handles errors and missing data:
 - **If Worker is unreachable**: Falls back to static route map
 - **If KV fetch fails**: Falls back to static route map
 - **Invalid password**: Shows error toast, does not update URL
-- **Ended LiveTrack session**: After 7 hours, automatically reverts to static route map
+- **Ended LiveTrack session**: Shows friendly "Event Finished" message for 2 hours, then hides Live tab completely
 
 This ensures users always see *something* useful on the map tab, even if live tracking isn't active yet or if there's a network issue. The fallback URL is defined in `src/constants.ts` and can be easily updated to any route planning service (Strava, Komoot, etc.).
 

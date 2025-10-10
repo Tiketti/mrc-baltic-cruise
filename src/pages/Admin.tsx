@@ -47,7 +47,7 @@ export const Admin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 px-4 py-8 text-white sm:px-8">
+    <div className="min-h-screen bg-gray-900 p-4 text-white">
       <Toaster
         position="top-center"
         toastOptions={{
@@ -73,7 +73,7 @@ export const Admin = () => {
       />
 
       <div className="mx-auto max-w-2xl px-4">
-        <div className="mb-6">
+        <div className="mb-4">
           <Link
             to="/brewery-run#map"
             className="inline-flex items-center text-brand-blue hover:text-brand-blue/80"
@@ -98,10 +98,10 @@ export const Admin = () => {
 
         <h1 className="mb-4 text-center font-bold text-3xl">Admin Dashboard</h1>
 
-        <div className="flex flex-col rounded-lg bg-gray-800 px-6 py-6 sm:px-10">
-          <h2 className="mb-6 font-semibold text-xl">Update LiveTrack URL</h2>
+        <div className="flex flex-col rounded-lg bg-gray-800 p-4 sm:px-10">
+          <h2 className="mb-4 font-semibold text-xl">Update LiveTrack URL</h2>
 
-          <form onSubmit={handleSubmit} className="flex flex-col space-y-6">
+          <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
             <div className="flex flex-col">
               <label htmlFor="url" className="mb-2 block font-medium text-sm">
                 Garmin LiveTrack URL
@@ -168,7 +168,7 @@ export const Admin = () => {
             </button>
           </form>
 
-          <div className="mt-6 rounded bg-gray-700/50 p-4 text-sm">
+          <div className="mt-1 rounded bg-gray-700/50 p-4 text-sm">
             <p className="mb-2 font-semibold">Instructions:</p>
             <ol className="list-inside list-decimal space-y-1 text-gray-300">
               <li>
