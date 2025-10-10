@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import { Eye } from "lucide-react";
 import { breweryStops, eventDate } from "../breweryData";
 import { Countdown } from "../components/Countdown";
@@ -14,10 +16,48 @@ type TabType = "schedule" | "route" | "live";
 export const BreweryRun = () => {
   useDocumentTitle("Brewery Run 2025 | MRC Helsinki");
 
+  const navigate = useNavigate();
+  const tapCountRef = useRef(0);
+  const tapTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleHeaderTap = () => {
+    tapCountRef.current += 1;
+
+    // Clear any existing timeout
+    if (tapTimeoutRef.current) {
+      clearTimeout(tapTimeoutRef.current);
+    }
+
+    if (tapCountRef.current === 5) {
+      toast.success("Taking you to the admin zone...", {
+        duration: 2000,
+        style: {
+          background: "#1f2937",
+          color: "#fff",
+          border: "1px solid #10b981",
+        },
+      });
+
+      // Small delay so user can see the toast before navigation
+      setTimeout(() => {
+        navigate("/admin");
+      }, 1_000);
+
+      tapCountRef.current = 0;
+    } else {
+      // Reset tap count after 1.5 seconds of inactivity
+      tapTimeoutRef.current = setTimeout(() => {
+        tapCountRef.current = 0;
+      }, 800);
+    }
+  };
+
   const {
     liveTrackUrl,
     isLiveTrackRecent,
     isLive,
+    showFinishedMessage,
+    finishedTimestamp,
     loading: liveTrackLoading,
   } = useLiveTrackUrl();
 
@@ -77,7 +117,11 @@ export const BreweryRun = () => {
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <div className="mx-auto w-full max-w-md px-4 py-8 md:max-w-2xl lg:max-w-4xl">
-        <h1 className="mb-4 text-center font-bold text-3xl tracking-wider">
+        {/* biome-ignore lint/a11y/useKeyWithClickEvents: Easter egg feature - intentionally mouse/tap only */}
+        <h1
+          className="mb-4 cursor-pointer select-none text-center font-bold text-3xl tracking-wider"
+          onClick={handleHeaderTap}
+        >
           BREWERY RUN 2025
         </h1>
 
@@ -85,7 +129,7 @@ export const BreweryRun = () => {
           <Countdown targetDate={eventDate} />
         </div>
 
-        <div className="mb-4 flex rounded-lg bg-gray-800 p-1">
+        <div className="mb-2 flex rounded-lg bg-gray-800 p-1">
           <button
             type="button"
             onClick={() => setActiveTab("schedule")}
@@ -149,6 +193,8 @@ export const BreweryRun = () => {
             }
             title={activeTab === "live" ? "Live Track" : "Route Map"}
             loading={liveTrackLoading}
+            showFinishedMessage={activeTab === "live" && showFinishedMessage}
+            finishedTimestamp={finishedTimestamp}
           />
         )}
       </div>

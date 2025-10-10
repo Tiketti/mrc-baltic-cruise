@@ -3,6 +3,7 @@ import {
   CLOUDFLARE_WORKER_URL,
   FALLBACK_MAP_URL,
   LIVE_TRACK_MAX_AGE_HOURS,
+  EVENT_FINISHED_VISIBLE_HOURS,
 } from "../constants";
 
 export const useLiveTrackUrl = () => {
@@ -10,6 +11,10 @@ export const useLiveTrackUrl = () => {
   const [liveTrackUrl, setLiveTrackUrl] = useState<string | null>(null);
   const [isLiveTrackRecent, setIsLiveTrackRecent] = useState(false);
   const [isLive, setIsLive] = useState(false);
+  const [showFinishedMessage, setShowFinishedMessage] = useState(false);
+  const [finishedTimestamp, setFinishedTimestamp] = useState<string | null>(
+    null,
+  );
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -25,6 +30,7 @@ export const useLiveTrackUrl = () => {
           setLiveTrackUrl(null);
           setIsLiveTrackRecent(false);
           setIsLive(false);
+          setShowFinishedMessage(false);
           setLoading(false);
 
           return;
@@ -40,20 +46,45 @@ export const useLiveTrackUrl = () => {
             (now.getTime() - timestamp.getTime()) / (1000 * 60 * 60);
 
           if (hoursSinceUpdate < LIVE_TRACK_MAX_AGE_HOURS) {
-            // Recent LiveTrack URL - use it and make it available for tabs
-            setUrl(data.url);
+            // Recent LiveTrack URL - determine state
             setLiveTrackUrl(data.url);
-            setIsLiveTrackRecent(true);
-            setIsLive(eventIsLive);
-            console.log(
-              `LiveTrack URL is recent (${hoursSinceUpdate.toFixed(1)} hours old), live: ${eventIsLive}`,
-            );
+
+            if (eventIsLive) {
+              // Event is actively running
+              setUrl(data.url);
+              setIsLiveTrackRecent(true);
+              setIsLive(true);
+              setShowFinishedMessage(false);
+              console.log(
+                `LiveTrack URL is recent (${hoursSinceUpdate.toFixed(1)} hours old), event is LIVE`,
+              );
+            } else if (hoursSinceUpdate < EVENT_FINISHED_VISIBLE_HOURS) {
+              // Event finished recently (< 2 hours ago) - show finished message
+              setUrl(FALLBACK_MAP_URL);
+              setIsLiveTrackRecent(true);
+              setIsLive(false);
+              setShowFinishedMessage(true);
+              setFinishedTimestamp(data.timestamp);
+              console.log(
+                `Event finished ${hoursSinceUpdate.toFixed(1)} hours ago, showing finished message`,
+              );
+            } else {
+              // Event finished > 2 hours ago - hide Live tab
+              setUrl(FALLBACK_MAP_URL);
+              setIsLiveTrackRecent(false);
+              setIsLive(false);
+              setShowFinishedMessage(false);
+              console.log(
+                `Event finished ${hoursSinceUpdate.toFixed(1)} hours ago, hiding Live tab`,
+              );
+            }
           } else {
-            // Old LiveTrack URL - use fallback but keep the live track URL available
+            // Old LiveTrack URL - hide everything
             setUrl(FALLBACK_MAP_URL);
             setLiveTrackUrl(data.url);
             setIsLiveTrackRecent(false);
             setIsLive(false);
+            setShowFinishedMessage(false);
             console.log(
               `LiveTrack URL is too old (${hoursSinceUpdate.toFixed(1)} hours), using fallback`,
             );
@@ -64,6 +95,7 @@ export const useLiveTrackUrl = () => {
           setLiveTrackUrl(data.url);
           setIsLiveTrackRecent(true);
           setIsLive(eventIsLive);
+          setShowFinishedMessage(false);
           console.log("LiveTrack URL loaded (no timestamp)");
         } else {
           console.log("No LiveTrack URL set, using fallback");
@@ -71,6 +103,7 @@ export const useLiveTrackUrl = () => {
           setLiveTrackUrl(null);
           setIsLiveTrackRecent(false);
           setIsLive(false);
+          setShowFinishedMessage(false);
         }
 
         setLoading(false);
@@ -81,6 +114,7 @@ export const useLiveTrackUrl = () => {
         setLiveTrackUrl(null);
         setIsLiveTrackRecent(false);
         setIsLive(false);
+        setShowFinishedMessage(false);
         setLoading(false);
       }
     };
@@ -88,5 +122,13 @@ export const useLiveTrackUrl = () => {
     fetchLiveTrackUrl();
   }, []);
 
-  return { url, liveTrackUrl, isLiveTrackRecent, isLive, loading };
+  return {
+    url,
+    liveTrackUrl,
+    isLiveTrackRecent,
+    isLive,
+    showFinishedMessage,
+    finishedTimestamp,
+    loading,
+  };
 };

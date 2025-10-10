@@ -8,3 +8,6 @@ export const FALLBACK_MAP_URL =
 
 // Maximum age (in hours) for LiveTrack URL to be considered active
 export const LIVE_TRACK_MAX_AGE_HOURS = 7;
+
+// How long (in hours) to show "Event finished" message after event ends
+export const EVENT_FINISHED_VISIBLE_HOURS = 2;
