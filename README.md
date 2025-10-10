@@ -81,20 +81,53 @@ sequenceDiagram
 
 **Workflow:**
 1. Runner starts Garmin LiveTrack and receives email with unique session URL
-2. Runner opens `/admin` on phone, pastes URL, enters password
-3. Worker validates password and stores URL in KV
-4. All users visiting the map tab automatically see live tracking
-5. No backend, no database, no complex infrastructure needed!
+2. Runner opens `/admin` on phone, pastes URL, checks "Event is active", enters password
+3. Worker validates password and stores URL + live status + timestamp in KV
+4. All users visiting the site see a "Live" tab with a pulsing red eye icon 👁️
+5. When run finishes, runner unchecks "Event is active" (no need to re-paste URL!)
+6. Users see "Live" tab without the pulsing eye (can check if group is still at final venue)
+7. After 7 hours from last update, the "Live" tab auto-hides
+8. No backend, no database, no complex infrastructure needed
 
 **Using the Admin Dashboard:**
 
-To update the live tracking URL during the event:
+The admin interface (`/admin`) supports two operations:
 
+**Starting the Event:**
 1. Navigate to `https://mikkellerrunning.club/admin`
 2. Paste the Garmin LiveTrack URL from your email
-3. Enter the admin password
-4. Click "Update LiveTrack URL"
-5. Success! The map will immediately show live tracking for all visitors
+3. Check "Event is currently active"
+4. Enter the admin password
+5. Click "Update LiveTrack URL"
+6. Visitors now see the "Live" tab with a pulsing red eye 👁️ indicating active tracking
+
+**Finishing the Event:**
+1. Navigate to `https://mikkellerrunning.club/admin`
+2. **Leave URL field empty** (no need to re-enter!)
+3. Uncheck "Event is currently active"
+4. Enter the admin password
+5. Click "Update LiveTrack URL"
+6. Visitors see the "Live" tab WITHOUT the pulsing eye (frozen at last location)
+
+**Design Choices:**
+
+- **Pulsing Eye Icon**: Appears only when "Event is active" is checked, signaling to visitors that people are actively running right now
+- **Live Tab Persistence**: After unchecking "Event is active", the Live tab remains visible for up to 7 hours so visitors can check if the group is still at the final brewery
+- **Timestamp Reset**: The 7-hour countdown resets with every admin update, so if you toggle the status at 6pm, the tab stays visible until 1am
+- **Optional URL Field**: When just updating the event status, you can leave the URL field empty - the system keeps the existing URL
+- **Three Tab States**: 
+  - Schedule + Route only (before event)
+  - Schedule + Route + Live with 👁️ (event active)
+  - Schedule + Route + Live without 👁️ (event finished, < 7h ago)
+
+**Visitor Experience:**
+
+The map section adapts to event status:
+
+- **Before event starts**: Only "Schedule" and "Route" tabs visible
+- **Event is live** (actively running): "Live" tab appears with pulsing red eye icon - location updates in real-time
+- **Event finished** (< 7 hours ago): "Live" tab visible without pulsing eye - shows last known location (useful if group is still drinking at final venue)
+- **Event ended** (> 7 hours ago): "Live" tab disappears, back to "Schedule" and "Route" only
 
 **Fallback Behavior:**
 
@@ -104,6 +137,7 @@ The system gracefully handles errors and missing data:
 - **If Worker is unreachable**: Falls back to static route map
 - **If KV fetch fails**: Falls back to static route map
 - **Invalid password**: Shows error toast, does not update URL
+- **Ended LiveTrack session**: After 7 hours, automatically reverts to static route map
 
 This ensures users always see *something* useful on the map tab, even if live tracking isn't active yet or if there's a network issue. The fallback URL is defined in `src/constants.ts` and can be easily updated to any route planning service (Strava, Komoot, etc.).
 

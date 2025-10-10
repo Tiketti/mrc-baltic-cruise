@@ -75,19 +75,20 @@ pnpm worker:tail
 
 ### GET /api/livetrack
 
-Returns the current LiveTrack URL and timestamp.
+Returns the current LiveTrack URL, timestamp, and live status.
 
 **Response:**
 ```json
 {
   "url": "https://livetrack.garmin.com/session/...",
-  "timestamp": "2025-10-09T12:00:00.000Z"
+  "timestamp": "2025-10-09T12:00:00.000Z",
+  "isLive": true
 }
 ```
 
 ### POST /api/livetrack
 
-Sets a new LiveTrack URL (requires authentication).
+Updates the LiveTrack URL and/or live status (requires authentication).
 
 **Headers:**
 - `X-Admin-Password`: Your admin password
@@ -96,9 +97,15 @@ Sets a new LiveTrack URL (requires authentication).
 **Body:**
 ```json
 {
-  "url": "https://livetrack.garmin.com/session/..."
+  "url": "https://livetrack.garmin.com/session/...",
+  "isLive": true
 }
 ```
+
+**Notes:**
+- `url` is **optional** - if omitted, the existing URL is preserved
+- `isLive` indicates whether the event is actively happening (controls the pulsing eye icon)
+- Timestamp is automatically updated on every POST request
 
 **Response:**
 ```json
@@ -107,11 +114,30 @@ Sets a new LiveTrack URL (requires authentication).
 }
 ```
 
+**Example Use Cases:**
+
+Starting event:
+```json
+{
+  "url": "https://livetrack.garmin.com/session/abc123",
+  "isLive": true
+}
+```
+
+Finishing event (no need to re-send URL):
+```json
+{
+  "isLive": false
+}
+```
+
 ## Notes
 
-- The timestamp is automatically set when updating the URL
-- URLs older than 7 hours are considered expired (configured in frontend)
+- The timestamp is automatically updated on every POST request (whether you're setting a URL or just toggling status)
+- The 7-hour auto-hide timer resets with each admin update
+- URLs/events older than 7 hours from last update are considered expired (configured in frontend as `LIVE_TRACK_MAX_AGE_HOURS`)
 - CORS is enabled for all origins
+- The `isLive` boolean controls whether the pulsing eye icon appears in the frontend
 
 ## Troubleshooting
 

@@ -8,7 +8,7 @@ export const MapTab = ({ url, title, loading }: MapTabProps) => {
   return (
     <div className="flex h-[calc(100vh-12rem)] flex-col pb-4">
       <div className="flex flex-1 flex-col overflow-hidden rounded-lg bg-gray-800 md:mx-auto md:w-2/3 md:max-w-4xl">
-        <h2 className="px-4 pt-4 pb-2 font-semibold text-lg">
+        <h2 className="p-2 font-semibold text-lg">
           {title}{" "}
           {loading && (
             <span className="text-gray-400 text-xs">(loading...)</span>

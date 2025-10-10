@@ -85,7 +85,7 @@ export const BreweryRun = () => {
           <Countdown targetDate={eventDate} />
         </div>
 
-        <div className="mb-4 flex rounded-lg bg-gray-800 p-1">
+        <div className="mb-2 flex rounded-lg bg-gray-800 p-1">
           <button
             type="button"
             onClick={() => setActiveTab("schedule")}

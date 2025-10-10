@@ -9,7 +9,7 @@ export const Admin = () => {
 
   const [url, setUrl] = useState("");
   const [password, setPassword] = useState("");
-  const [isLive, setIsLive] = useState(false);
+  const [isLive, setIsLive] = useState(true); // Default to checked - most common use case
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -36,7 +36,7 @@ export const Admin = () => {
       toast.success("LiveTrack URL updated successfully!", { id: toastId });
       setUrl("");
       setPassword("");
-      setIsLive(false);
+      setIsLive(true); // Reset to checked for next use
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "Failed to update URL";
