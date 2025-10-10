@@ -13,25 +13,19 @@ export const BreweryCard = ({
   isCurrentStop = false,
   isCurrentTransition = false,
 }: BreweryCardProps) => {
-  const timeText = stop.meetTime
-    ? `Meet: ${stop.meetTime} / Depart: ${stop.departTime}`
-    : isLast
-      ? `Arrive: ${stop.arriveTime}`
-      : `Arrive: ${stop.arriveTime} / Depart: ${stop.departTime}`;
-
   return (
     <div className="relative">
       {/* Brewery Card */}
       <div
-        className={`relative rounded-2xl p-4 text-gray-900 shadow-lg transition-all duration-1000 ${
+        className={`relative overflow-hidden rounded-2xl text-gray-900 shadow-lg transition-all duration-1000 ${
           isCurrentStop
-            ? "animate-pulse-slow bg-brand-blue/20 shadow-xl ring-4 ring-brand-blue" // Currently at this brewery
+            ? "animate-pulse-slow bg-brand-blue/20 shadow-xl ring-4 ring-brand-blue"
             : "bg-gray-200"
         }`}
       >
-        <div className="flex items-center space-x-4">
-          {/* Brewery Logo */}
-          <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white">
+        {/* Logo section - centered at top */}
+        <div className="flex items-center justify-center bg-white/40 px-4 py-2">
+          <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-xl bg-white shadow-sm">
             <img
               src={stop.logo}
               alt={`${stop.name} logo`}
@@ -48,42 +42,106 @@ export const BreweryCard = ({
               }}
             />
           </div>
+        </div>
 
-          {/* Brewery Info */}
-          <div className="flex-1">
-            <h3 className="font-bold text-gray-900 text-lg">{stop.name}</h3>
-            <p className="text-gray-600 text-sm">{timeText}</p>
-          </div>
+        {/* Brewery name - centered */}
+        <div className="px-4 pt-4 pb-2 text-center">
+          <h3 className="font-bold text-gray-900 text-xl">{stop.name}</h3>
+        </div>
+
+        {/* Schedule info - organized in a clean grid */}
+        <div className="px-4 pb-4">
+          {stop.meetTime ? (
+            // First stop - show meet and depart times
+            <div className="flex justify-center gap-4 text-center">
+              <div className="flex-1">
+                <div className="mb-1 text-gray-500 text-xs uppercase tracking-wider">
+                  Meet
+                </div>
+                <div className="font-semibold text-gray-900 text-lg">
+                  {stop.meetTime}
+                </div>
+              </div>
+              <div className="flex-1">
+                <div className="mb-1 text-gray-500 text-xs uppercase tracking-wider">
+                  Depart
+                </div>
+                <div className="font-semibold text-gray-900 text-lg">
+                  {stop.departTime}
+                </div>
+              </div>
+            </div>
+          ) : isLast ? (
+            // Last stop - only arrival time
+            <div className="text-center">
+              <div className="mb-1 text-gray-500 text-xs uppercase tracking-wider">
+                Arrive
+              </div>
+              <div className="font-semibold text-gray-900 text-lg">
+                {stop.arriveTime}
+              </div>
+            </div>
+          ) : (
+            // Middle stops - show arrive and depart times
+            <div className="flex justify-center gap-4 text-center">
+              <div className="flex-1">
+                <div className="mb-1 text-gray-500 text-xs uppercase tracking-wider">
+                  Arrive
+                </div>
+                <div className="font-semibold text-gray-900 text-lg">
+                  {stop.arriveTime}
+                </div>
+              </div>
+              <div className="flex-1">
+                <div className="mb-1 text-gray-500 text-xs uppercase tracking-wider">
+                  Depart
+                </div>
+                <div className="font-semibold text-gray-900 text-lg">
+                  {stop.departTime}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
       {/* Distance Indicator (not for last stop) */}
       {!isLast && stop.distanceToNext && (
         <div
-          className={`flex items-center justify-center py-4 transition-all duration-1000 ${
-            isCurrentTransition ? "animate-pulse" : ""
+          className={`flex items-center justify-center transition-all duration-1000 ${
+            isCurrentTransition ? "animate-pulse py-6" : "py-4"
           }`}
         >
           <div
-            className={`flex items-center space-x-2 rounded-full px-4 py-2 ${
+            className={`flex items-center justify-center gap-3 rounded-2xl transition-all duration-1000 ${
               isCurrentTransition
-                ? "bg-brand-yellow text-black shadow-lg" // Currently running this leg
-                : "bg-transparent"
+                ? "w-full bg-brand-yellow px-8 py-5 shadow-2xl ring-4 ring-brand-yellow/50" // Currently running this leg
+                : "rounded-full bg-transparent px-4 py-2"
             }`}
           >
+            {isCurrentTransition && (
+              <div className="flex items-center gap-2 font-bold text-black text-xs uppercase tracking-widest">
+                <span>Running Now</span>
+              </div>
+            )}
+
             {/* Distance */}
             <span
-              className={`font-semibold text-lg ${
-                isCurrentTransition ? "text-black" : "text-white"
+              className={`font-bold transition-all ${
+                isCurrentTransition
+                  ? "text-2xl text-black"
+                  : "font-semibold text-lg text-white"
               }`}
             >
               {stop.distanceToNext} km
             </span>
 
-            {/* Simple arrow pointing down */}
+            {/* Arrow pointing down */}
             <div
-              className={`text-xl ${
-                isCurrentTransition ? "text-black" : "text-white"
+              className={`transition-all ${
+                isCurrentTransition
+                  ? "text-3xl text-black"
+                  : "text-white text-xl"
               }`}
             >
               ↓
