@@ -126,7 +126,7 @@ export const BreweryRun = () => {
         </h1>
 
         <div className="mb-4">
-          <Countdown targetDate={eventDate} />
+          <Countdown targetDate={eventDate} currentTime={mockTime} />
         </div>
 
         <div className="mb-2 flex rounded-lg bg-gray-800 p-1">
