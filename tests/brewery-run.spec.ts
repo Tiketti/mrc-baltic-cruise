@@ -47,6 +47,9 @@ test.describe("Brewery Run", () => {
   });
 
   test("should show countdown to event", async ({ page }) => {
+    // Freeze time to one day before the event so the countdown is visible
+    await page.clock.setFixedTime(new Date(2025, 9, 10, 10, 0, 0));
+
     await page.goto("/brewery-run");
 
     // Countdown should be visible (exact text depends on current date)
