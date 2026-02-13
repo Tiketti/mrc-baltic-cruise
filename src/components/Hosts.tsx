@@ -2,7 +2,15 @@ import { Root, List, Trigger, Content } from "@radix-ui/react-tabs";
 import { hostItems } from "../data";
 import { Link } from "lucide-react";
 
-export const HostsSection = () => {
+// Derive valid host IDs from the data so the type stays in sync automatically
+type HostId = (typeof hostItems)[number]["id"];
+
+type HostsSectionProps = { 
+  order?: HostId[];
+}
+export const HostsSection = ({ order }: HostsSectionProps) => {
+  const sortedHostItems = order ? hostItems.sort((a, b) => (order.indexOf(a.id) ?? 0) - (order.indexOf(b.id) ?? 0)) : hostItems;
+
   return (
     <div className="flex w-full flex-col items-center justify-center md:max-w-screen-md lg:max-w-screen-lg">
       <a
@@ -15,12 +23,12 @@ export const HostsSection = () => {
         </h2>
       </a>
 
-      <Root defaultValue="stockholm">
+      <Root defaultValue="helsinki">
         <List
           className="flex border-gray-200 border-b"
           aria-label="Meet your hosts"
         >
-          {hostItems.map((host) => (
+          {sortedHostItems.map((host) => (
             <Trigger
               key={host.id}
               className="flex-1 cursor-pointer px-4 py-2 text-center font-extrabold text-lg hover:text-brand-burgundy data-[state=active]:border-brand-burgundy data-[state=active]:border-b-2 data-[state=active]:text-brand-burgundy md:flex-initial"
@@ -31,7 +39,7 @@ export const HostsSection = () => {
           ))}
         </List>
 
-        {hostItems.map((host) => (
+        {sortedHostItems.map((host) => (
           <Content key={host.id} value={host.id} className="p-4">
             <div>
               <img

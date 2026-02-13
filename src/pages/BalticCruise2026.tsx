@@ -1,5 +1,6 @@
 import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";
+import { HostsSection } from "../components/Hosts";
 import { Logo } from "../components/Logo";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
@@ -25,6 +26,8 @@ export const BalticCruise2026 = () => {
             Stay tuned for dates, cities, and all the details you need to join
             us!
           </p>
+
+          <HostsSection order={["helsinki","stockholm", "tallinn"]} />
           
           <div className="flex flex-col items-center gap-4 pt-4">
             <a
