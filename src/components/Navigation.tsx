@@ -1,41 +1,52 @@
 import { Link, useLocation } from "react-router-dom";
 
+
+const CRUISE1_PATH = "/baltic-cruise-1" as const;
+const CRUISE2_PATH = "/baltic-cruise-2" as const;
+
 export const Navigation = () => {
   const location = useLocation();
 
+  // Helper function to check if a route is active
+  // Handles alias routes (e.g., /baltic-cruise-1 and /baltic-cruise-2025 both highlight Cruise I)
+  const isActive = (routes: string[]) =>  routes.some((route) => location.pathname === route);
+  
   return (
     <nav className="fixed top-4 right-4 left-4 z-50">
-      <div className="rounded-lg bg-white/90 px-4 py-2 shadow-lg backdrop-blur-sm">
-        <div className="flex justify-center space-x-4">
-          <Link
-            to="/"
-            className={`rounded px-2 py-1 font-medium text-xs transition-colors ${
-              location.pathname === "/"
-                ? "bg-blue-600 text-white"
-                : "text-gray-700 hover:bg-gray-100"
-            }`}
-          >
-            Home
-          </Link>
+      <div className="rounded-lg bg-brand-blue/95 px-4 py-2 shadow-lg backdrop-blur-sm">
+        <div className="flex justify-center space-x-2 sm:space-x-4">
           <Link
             to="/brewery-run"
-            className={`rounded px-2 py-1 font-medium text-xs transition-colors ${
-              location.pathname === "/brewery-run"
-                ? "bg-blue-600 text-white"
-                : "text-gray-700 hover:bg-gray-100"
+            className={`rounded px-3 py-2 font-medium text-xs transition-colors sm:px-4 ${
+              isActive(["/brewery-run"])
+                ? "bg-brand-burgundy text-brand-paper"
+                : "text-brand-paper/80 hover:bg-brand-blue/50 hover:text-brand-paper"
             }`}
           >
-            Brewery Run
+            <span className="hidden sm:inline">Brewery Run</span>
+            <span className="sm:hidden">Brewery Run 2025</span>
           </Link>
           <Link
-            to="/baltic-cruise"
-            className={`rounded px-2 py-1 font-medium text-xs transition-colors ${
-              location.pathname === "/baltic-cruise"
-                ? "bg-blue-600 text-white"
-                : "text-gray-700 hover:bg-gray-100"
+            to={CRUISE1_PATH}
+            className={`rounded px-3 py-2 font-medium text-xs transition-colors sm:px-4 ${
+              isActive(["/baltic-cruise-1", "/baltic-cruise-2025"])
+                ? "bg-brand-burgundy text-brand-paper"
+                : "text-brand-paper/80 hover:bg-brand-blue/50 hover:text-brand-paper"
             }`}
           >
-            Baltic Cruise
+            <span className="hidden sm:inline">Cruise '25</span>
+            <span className="sm:hidden">Cruise '25</span>
+          </Link>
+          <Link
+            to={CRUISE2_PATH}
+            className={`rounded px-3 py-2 font-medium text-xs transition-colors sm:px-4 ${
+              isActive(["/", "/baltic-cruise-2", "/baltic-cruise-2026"])
+                ? "bg-brand-burgundy text-brand-paper"
+                : "text-brand-paper/80 hover:bg-brand-blue/50 hover:text-brand-paper"
+            }`}
+          >
+            <span className="hidden sm:inline">Cruise '26</span>
+            <span className="sm:hidden">Cruise '26</span>
           </Link>
         </div>
       </div>

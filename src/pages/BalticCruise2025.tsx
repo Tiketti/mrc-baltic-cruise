@@ -11,7 +11,7 @@ import { Logo } from "../components/Logo";
 import { cities, faqItems } from "../data";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
-export const BalticCruise = () => {
+export const BalticCruise2025 = () => {
   useDocumentTitle("MRC Baltic Cruise 2025");
 
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
