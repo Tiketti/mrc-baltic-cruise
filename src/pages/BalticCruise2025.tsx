@@ -11,7 +11,7 @@ import { Logo } from "../components/Logo";
 import { cities, faqItems } from "../data";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
-export const BalticCruise = () => {
+export const BalticCruise2025 = () => {
   useDocumentTitle("MRC Baltic Cruise 2025");
 
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
@@ -29,12 +29,12 @@ export const BalticCruise = () => {
         date={selectedCityData?.date}
         content={selectedCityData?.agenda}
       />
-      <Header />
-      <Logo />
+      <Header title="MRC Baltic Cruise 2025" />
+      <Logo variant="2025" />
       <div className="flex flex-col items-center justify-center space-y-8 px-8 md:w-full">
         <a
           href="#itinerary"
-          className="group flex items-center border-brand-paper border-b hover:border-brand-burgundy"
+          className="group flex items-center border-surface border-b hover:border-accent"
         >
           <Link className="invisible group-hover:visible" />
           <h2 id="itinerary" className="pl-2">

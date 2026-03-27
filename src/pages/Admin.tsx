@@ -76,7 +76,7 @@ export const Admin = () => {
         <div className="mb-4">
           <Link
             to="/brewery-run#map"
-            className="inline-flex items-center text-brand-blue hover:text-brand-blue/80"
+            className="inline-flex items-center text-primary hover:text-primary/80"
           >
             <svg
               className="mr-2 h-5 w-5"
@@ -112,7 +112,7 @@ export const Admin = () => {
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
                 placeholder="https://livetrack.garmin.com/session/... (optional if just updating status)"
-                className="min-w-0 rounded-lg bg-gray-700 px-4 py-3 text-white placeholder-gray-400 outline outline-1 outline-brand-blue transition-all focus:border-brand-blue focus:ring-2 focus:ring-brand-blue"
+                className="min-w-0 rounded-lg bg-gray-700 px-4 py-3 text-white placeholder-gray-400 outline outline-1 outline-primary transition-all focus:border-primary focus:ring-2 focus:ring-primary"
               />
             </div>
 
@@ -122,7 +122,7 @@ export const Admin = () => {
                 id="isLive"
                 checked={isLive}
                 onChange={(e) => setIsLive(e.target.checked)}
-                className="mt-1 h-5 w-24 cursor-pointer rounded border-2 border-solid bg-gray-600 text-brand-blue transition-colors checked:border-brand-blue checked:bg-brand-blue focus:ring-2 focus:ring-brand-blue focus:ring-offset-2 focus:ring-offset-gray-800"
+                className="mt-1 h-5 w-24 cursor-pointer rounded border-2 border-solid bg-gray-600 text-primary transition-colors checked:border-primary checked:bg-primary focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-gray-800"
               />
               <div className="flex flex-col">
                 <label
@@ -154,14 +154,14 @@ export const Admin = () => {
                 placeholder="Enter admin password"
                 required
                 autoComplete="current-password"
-                className="min-w-0 rounded-lg bg-gray-700 px-4 py-3 text-white placeholder-gray-400 outline outline-1 outline-brand-blue transition-all focus:border-brand-blue focus:ring-2 focus:ring-brand-blue"
+                className="min-w-0 rounded-lg bg-gray-700 px-4 py-3 text-white placeholder-gray-400 outline outline-1 outline-primary transition-all focus:border-primary focus:ring-2 focus:ring-primary"
               />
             </div>
 
             <button
               type="submit"
               disabled={isSubmitting}
-              className="rounded-lg bg-brand-blue px-6 py-3 font-semibold text-white transition-all hover:bg-brand-blue/90 disabled:cursor-not-allowed disabled:opacity-50"
+              className="rounded-lg bg-primary px-6 py-3 font-semibold text-white transition-all hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
               style={{ color: "white" }}
             >
               {isSubmitting ? "Updating..." : "Update LiveTrack URL"}

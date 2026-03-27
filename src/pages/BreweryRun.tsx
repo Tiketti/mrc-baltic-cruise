@@ -135,7 +135,7 @@ export const BreweryRun = () => {
             onClick={() => setActiveTab("schedule")}
             className={`flex-1 rounded-md border-0 px-4 py-2 text-center font-medium text-sm outline-none transition-colors ${
               activeTab === "schedule"
-                ? "bg-brand-blue text-white shadow-sm"
+                ? "bg-primary text-white shadow-sm"
                 : "bg-transparent text-gray-300 hover:text-white"
             }`}
             style={activeTab === "schedule" ? { color: "white" } : undefined}
@@ -147,7 +147,7 @@ export const BreweryRun = () => {
             onClick={() => setActiveTab("route")}
             className={`flex-1 rounded-md border-0 px-4 py-2 text-center font-medium text-sm outline-none transition-colors ${
               activeTab === "route"
-                ? "bg-brand-blue text-white shadow-sm"
+                ? "bg-primary text-white shadow-sm"
                 : "bg-transparent text-gray-300 hover:text-white"
             }`}
             style={activeTab === "route" ? { color: "white" } : undefined}
@@ -160,7 +160,7 @@ export const BreweryRun = () => {
               onClick={() => setActiveTab("live")}
               className={`flex-1 rounded-md border-0 px-4 py-2 text-center font-medium text-sm outline-none transition-colors ${
                 activeTab === "live"
-                  ? "bg-brand-blue text-white shadow-sm"
+                  ? "bg-primary text-white shadow-sm"
                   : "bg-transparent text-gray-300 hover:text-white"
               }`}
               style={activeTab === "live" ? { color: "white" } : undefined}

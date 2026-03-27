@@ -7,6 +7,34 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Palette: Mikkeller Brand Book colors, named by appearance (fixed across themes)
+     Primary: text & backgrounds to complement black/white or black/paper */
+  --brand-evening-blue: 15 15 84;
+  --brand-moss-green: 53 124 79;
+  --brand-brown: 143 92 53;
+  /* Secondary: accents, colorful & less formal contexts */
+  --brand-burgundy: 136 44 41;
+  --brand-paper: 238 229 210;
+  --brand-peach: 240 183 173;
+  --brand-mauve: 207 181 188;
+  --brand-red: 218 58 53;
+  --brand-yellow: 245 225 75;
+  --brand-sky: 53 132 186;
+  --brand-purple: 106 79 152;
+
+  /* Semantic: role-based tokens, swapped per theme */
+  --color-primary: var(--brand-evening-blue);
+  --color-accent: var(--brand-burgundy);
+  --color-surface: var(--brand-paper);
+}
+
+[data-theme="2026"] {
+  --color-primary: 14 66 92;
+  --color-accent: var(--brand-purple);
+  --color-surface: 244 236 216;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -46,13 +74,13 @@
 
   h1 {
     font-family: "MikkelWind", system-ui, sans-serif;
-    @apply text-brand-blue;
+    @apply text-primary;
   }
 
   h2,
   h3 {
     font-family: "Windsor", system-ui, sans-serif;
-    @apply text-brand-blue;
+    @apply text-primary;
   }
 
   h2 {
@@ -72,7 +100,7 @@
   }
 
   a {
-    @apply text-brand-burgundy;
+    @apply text-accent;
   }
 }
 

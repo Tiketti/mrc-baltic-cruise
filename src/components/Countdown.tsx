@@ -130,7 +130,7 @@ export const Countdown = ({ targetDate, currentTime }: CountdownProps) => {
   if (timeRemaining.isEventStarted) {
     return (
       <div className="text-center">
-        <p className="animate-pulse font-bold font-mikkelwind text-3xl text-brand-burgundy text-gray-900">
+        <p className="animate-pulse font-bold font-mikkelwind text-3xl text-accent text-gray-900">
           TODAY! LET'S GO!
         </p>
       </div>

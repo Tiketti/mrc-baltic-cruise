@@ -1,4 +1,8 @@
-export const Header = () => {
+interface HeaderProps {
+  title: string;
+}
+
+export const Header = ({ title }: HeaderProps) => {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
@@ -9,17 +13,17 @@ export const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 bg-brand-blue p-2 text-center shadow-brand-blue shadow-lg">
+    <header className="sticky top-0 bg-primary p-2 text-center shadow-lg shadow-primary">
       <button
         type="button"
-        className="p-2 focus:outline-none focus:ring-2 focus:ring-brand-paper focus:ring-offset-2 focus:ring-offset-brand-blue"
+        className="p-2 focus:outline-none focus:ring-2 focus:ring-surface focus:ring-offset-2 focus:ring-offset-primary"
         title="Scroll to top"
-        aria-label="MRC Baltic Cruise 2025 - Click to scroll to top"
+        aria-label={`${title} - Click to scroll to top`}
         onClick={scrollToTop}
         onKeyDown={handleKeyDown}
       >
-        <h1 className="cursor-pointer text-2xl text-brand-paper tracking-wide sm:text-4xl md:text-5xl">
-          MRC Baltic Cruise 2025
+        <h1 className="cursor-pointer text-2xl text-surface tracking-wide sm:text-4xl md:text-5xl">
+          {title}
         </h1>
       </button>
     </header>

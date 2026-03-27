@@ -12,7 +12,7 @@ export const Faq = ({ items }: { items: FaqItem[] }) => {
     <div className="flex w-full flex-col items-center justify-center">
       <a
         href="#faq"
-        className="group flex items-center justify-center border-brand-paper border-b hover:border-brand-burgundy"
+        className="group flex items-center justify-center border-surface border-b hover:border-accent"
       >
         <Link className="invisible group-hover:visible" />
         <h2 id="faq" className="pl-2">
@@ -23,7 +23,7 @@ export const Faq = ({ items }: { items: FaqItem[] }) => {
         <Accordion type="multiple" className="">
           {items.map(({ title, nodeContent, content }) => (
             <AccordionItem key={title} value={title} className="">
-              <AccordionTrigger className="flex flex-1 cursor-pointer items-center justify-between py-4 font-[windsor] text-2xl transition-all data-[state=open]:text-brand-burgundy [&[data-state=open]>svg]:rotate-180">
+              <AccordionTrigger className="flex flex-1 cursor-pointer items-center justify-between py-4 font-[windsor] text-2xl transition-all data-[state=open]:text-accent [&[data-state=open]>svg]:rotate-180">
                 {title}
                 <ChevronDown className="ml-4 h-4 w-4 shrink-0 transition-transform duration-200" />
               </AccordionTrigger>
