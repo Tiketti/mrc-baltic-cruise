@@ -5,7 +5,7 @@
   "type": "module",
   "engines": {
     "pnpm": ">=9.0.0",
-    "node": ">=22 <23"
+    "node": ">=24"
   },
   "scripts": {
     "dev": "vite --port 5151",
