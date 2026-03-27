@@ -10,6 +10,8 @@ export const cities2026 = [
 
     This time we kick off the cruise with a chill run in Helsinki. We have pace groups for runners wishing to do 5 to 12 km.
 
+    Start time 12:00 sharp.
+
     We start and finish at SalamaNation which has a bag drop for us.
 
     If you are taking the suggested ferry Tallink Silja Symphony leaving at 16:45, we recommend you be at Olympiaterminaali no later than 16:00. A captain-led, official city walk will start the 2 km transport to the harbour at 15:30. (A cab or a Bolt ride will take you to the harbour in 15 minutes.)`,
