@@ -13,7 +13,7 @@ export const Header = ({ title }: HeaderProps) => {
   };
 
   return (
-    <header className="sticky top-0 bg-primary p-2 text-center shadow-lg shadow-primary">
+    <header className="sticky top-0 bg-primary px-2 pt-14 pb-2 text-center shadow-lg shadow-primary">
       <button
         type="button"
         className="p-2 focus:outline-none focus:ring-2 focus:ring-surface focus:ring-offset-2 focus:ring-offset-primary"
