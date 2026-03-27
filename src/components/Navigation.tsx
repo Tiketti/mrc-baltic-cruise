@@ -13,14 +13,14 @@ export const Navigation = () => {
   
   return (
     <nav className="fixed top-4 right-4 left-4 z-50">
-      <div className="rounded-lg bg-brand-blue/95 px-4 py-2 shadow-lg backdrop-blur-sm">
+      <div className="rounded-lg bg-primary/95 px-4 py-2 shadow-lg backdrop-blur-sm">
         <div className="flex justify-center space-x-2 sm:space-x-4">
           <Link
             to="/brewery-run"
             className={`rounded px-3 py-2 font-medium text-xs transition-colors sm:px-4 ${
               isActive(["/brewery-run"])
-                ? "bg-brand-burgundy text-brand-paper"
-                : "text-brand-paper/80 hover:bg-brand-blue/50 hover:text-brand-paper"
+                ? "bg-accent text-surface"
+                : "text-surface/80 hover:bg-primary/50 hover:text-surface"
             }`}
           >
             <span className="hidden sm:inline">Brewery Run</span>
@@ -30,8 +30,8 @@ export const Navigation = () => {
             to={CRUISE1_PATH}
             className={`rounded px-3 py-2 font-medium text-xs transition-colors sm:px-4 ${
               isActive(["/baltic-cruise-1", "/baltic-cruise-2025"])
-                ? "bg-brand-burgundy text-brand-paper"
-                : "text-brand-paper/80 hover:bg-brand-blue/50 hover:text-brand-paper"
+                ? "bg-accent text-surface"
+                : "text-surface/80 hover:bg-primary/50 hover:text-surface"
             }`}
           >
             <span className="hidden sm:inline">Cruise '25</span>
@@ -41,8 +41,8 @@ export const Navigation = () => {
             to={CRUISE2_PATH}
             className={`rounded px-3 py-2 font-medium text-xs transition-colors sm:px-4 ${
               isActive(["/", "/baltic-cruise-2", "/baltic-cruise-2026"])
-                ? "bg-brand-burgundy text-brand-paper"
-                : "text-brand-paper/80 hover:bg-brand-blue/50 hover:text-brand-paper"
+                ? "bg-accent text-surface"
+                : "text-surface/80 hover:bg-primary/50 hover:text-surface"
             }`}
           >
             <span className="hidden sm:inline">Cruise '26</span>

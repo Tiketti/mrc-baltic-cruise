@@ -35,9 +35,8 @@ test.describe("Brewery Run", () => {
     // Click Route tab
     await page.getByRole("button", { name: "Route" }).click();
 
-    // Should show map iframe
-    const iframe = page.locator("iframe");
-    await expect(iframe).toBeVisible();
+    // Should show route map image (local asset renders as img, not iframe)
+    await expect(page.getByRole("img", { name: "Route Map" })).toBeVisible();
 
     // Switch back to Schedule
     await page.getByRole("button", { name: "Schedule" }).click();
@@ -82,8 +81,7 @@ test.describe("Brewery Run", () => {
   test("should respect URL hash for initial tab", async ({ page, context }) => {
     // Test #route hash by loading in a fresh page context
     await page.goto("/brewery-run#route");
-    const iframe = page.locator("iframe");
-    await expect(iframe).toBeVisible();
+    await expect(page.getByRole("img", { name: "Route Map" })).toBeVisible();
 
     // Test #schedule hash by creating a new page (fresh load)
     const page2 = await context.newPage();
@@ -236,8 +234,7 @@ test.describe("Brewery Run - Live Track Feature", () => {
 
     // Click Route tab - should show static map
     await page.getByRole("button", { name: "Route" }).click();
-    const iframe = page.locator("iframe");
-    await expect(iframe).toBeVisible();
+    await expect(page.getByRole("img", { name: "Route Map" })).toBeVisible();
   });
 
   test("should switch to route tab when live event expires", async ({

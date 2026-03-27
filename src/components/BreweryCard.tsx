@@ -19,7 +19,7 @@ export const BreweryCard = ({
       <div
         className={`relative overflow-hidden rounded-2xl text-gray-900 shadow-lg transition-all duration-1000 ${
           isCurrentStop
-            ? "animate-pulse-slow bg-brand-blue/20 shadow-xl ring-4 ring-brand-blue"
+            ? "animate-pulse-slow bg-primary/20 shadow-xl ring-4 ring-primary"
             : "bg-gray-200"
         }`}
       >
