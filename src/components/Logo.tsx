@@ -13,6 +13,7 @@ export const Logo = ({ variant = "2025" }: LogoProps) => {
       <img
         src={logoSrc[variant]}
         alt={`MRC Baltic Cruise Logo ${variant}`}
+        className="max-h-[50vh] w-auto"
       />
     </div>
   );
