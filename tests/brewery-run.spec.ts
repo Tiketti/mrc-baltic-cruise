@@ -1,6 +1,21 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Brewery Run", () => {
+  // Mock the LiveTrack API to return no active event so tests don't
+  // depend on the real Cloudflare Worker state.
+  test.beforeEach(async ({ context }) => {
+    await context.route(
+      "**/livetrack-api.perttu-468.workers.dev/api/livetrack",
+      (route) => {
+        route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({ url: null, timestamp: null, isLive: false }),
+        });
+      },
+    );
+  });
+
   test("should load the brewery run page", async ({ page }) => {
     await page.goto("/brewery-run");
 

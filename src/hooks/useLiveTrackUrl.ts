@@ -45,7 +45,7 @@ export const useLiveTrackUrl = () => {
           const hoursSinceUpdate =
             (now.getTime() - timestamp.getTime()) / (1000 * 60 * 60);
 
-          if (hoursSinceUpdate < LIVE_TRACK_MAX_AGE_HOURS) {
+          if (hoursSinceUpdate >= 0 && hoursSinceUpdate < LIVE_TRACK_MAX_AGE_HOURS) {
             // Recent LiveTrack URL - determine state
             setLiveTrackUrl(data.url);
 
