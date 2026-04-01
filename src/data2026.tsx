@@ -104,7 +104,7 @@ export const faqItems2026: FaqItem[] = [
   {
     title: "I was on the first cruise. What's different this time?",
     content:
-      "The route! This year we start in Helsinki, cruise to Stockholm, and finish in Tallinn. New routes, new adventures, double the fun.",
+      "The route! This year we start in Helsinki, cruise to Stockholm, and finish after another cruise in Tallinn. New routes, new adventures, double the fun. Finisher's party in Tallinn made the wish list for this year, so here it is!",
   },
 ];
 
