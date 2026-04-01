@@ -10,6 +10,7 @@ import { HostsSection } from "../components/Hosts";
 import { Logo } from "../components/Logo";
 import { cities, faqItems } from "../data";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
+import { HeroIntro } from "../components/HeroIntro";
 
 export const BalticCruise2025 = () => {
   useDocumentTitle("MRC Baltic Cruise 2025");
@@ -31,6 +32,11 @@ export const BalticCruise2025 = () => {
       />
       <Header title="MRC Baltic Cruise 2025" />
       <Logo variant="2025" />
+      <HeroIntro
+        tagline="Thanks for joining!"
+        blurb="We had runners from Estonia, Finland, and Sweden, as well as Berlin, Copenhagen, Reno, and more joining us for a nautical celebration of running and beer."
+        details={[{ label: "Route", value: "Stockgolm → Tallinn → Helsinki" }]}
+      />
       <div className="flex flex-col items-center justify-center space-y-8 px-8 md:w-full">
         <a
           href="#itinerary"

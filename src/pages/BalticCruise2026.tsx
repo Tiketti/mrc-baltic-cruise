@@ -5,6 +5,7 @@ import { CityCard } from "../components/CityCard";
 import { Dialog } from "../components/Dialog";
 import { Faq } from "../components/Faq";
 import { Header } from "../components/Header";
+import { HeroIntro } from "../components/HeroIntro";
 import { HostsSection } from "../components/Hosts";
 import { Logo } from "../components/Logo";
 import {
@@ -35,6 +36,14 @@ export const BalticCruise2026 = () => {
       />
       <Header title="MRC Baltic Cruise 2026" />
       <Logo variant="2026" />
+      <HeroIntro
+        tagline="Ready to take the Baltic Sea by storm?"
+        blurb="Mikkeller Running Club Baltic Cruise is all about running, beer, and meeting the best people onshore and onboard in 3 cities."
+        details={[
+          { label: "Route", value: "Helsinki → Stockholm → Tallinn" },
+          { label: "Cost", value: "Free. No entry fees, just show up." },
+        ]}
+      />
       <div className="flex flex-col items-center justify-center space-y-8 px-8 md:w-full">
         <a
           href="#itinerary"
