@@ -144,4 +144,10 @@ export const events2026: EventItem[] = [
     name: "Stockholm Run",
     url: "https://www.strava.com/clubs/302996/group_events/3455960626226077518",
   },
+  {
+    id: "tallinn-run-2026",
+    title: "MRC Baltic Cruise II - Tallinn Run",
+    name: "Tallinn Run",
+    url: "https://www.strava.com/clubs/315734/group_events/3476270584553686126",
+  },
 ];
