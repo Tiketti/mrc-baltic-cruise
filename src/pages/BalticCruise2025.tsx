@@ -35,7 +35,7 @@ export const BalticCruise2025 = () => {
       <HeroIntro
         tagline="Thanks for joining!"
         blurb="We had runners from Estonia, Finland, and Sweden, as well as Berlin, Copenhagen, Reno, and more joining us for a nautical celebration of running and beer."
-        details={[{ label: "Route", value: "Stockgolm → Tallinn → Helsinki" }]}
+        details={[{ label: "Route", value: "Stockholm → Tallinn → Helsinki" }]}
       />
       <div className="flex flex-col items-center justify-center space-y-8 px-8 md:w-full">
         <a
