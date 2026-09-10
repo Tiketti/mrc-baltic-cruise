@@ -35,6 +35,15 @@
   --color-surface: 244 236 216;
 }
 
+/* Straight from the brand book: moss green + burgundy. Surface is white rather than
+   paper because moss green is a mid-tone — paper ink tops out at 4.04:1 on it, under
+   AA for the small nav and countdown labels, whereas white reaches 5.06:1. */
+[data-theme="2027"] {
+  --color-primary: var(--brand-moss-green);
+  --color-accent: var(--brand-burgundy);
+  --color-surface: 255 255 255;
+}
+
 * {
   box-sizing: border-box;
 }

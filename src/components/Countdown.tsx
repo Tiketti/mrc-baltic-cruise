@@ -4,6 +4,9 @@ import confetti from "canvas-confetti";
 interface CountdownProps {
   targetDate: Date;
   currentTime?: Date;
+  // "dark" suits the near-black Brewery Run page; "brand" is for the lighter primary bands,
+  // where gray-400 labels drop below AA contrast.
+  tone?: "dark" | "brand";
 }
 
 interface TimeRemaining {
@@ -67,11 +70,19 @@ const calculateTimeRemaining = (
   return { days, hours, minutes, seconds, isEventStarted, isPast };
 };
 
-export const Countdown = ({ targetDate, currentTime }: CountdownProps) => {
+export const Countdown = ({
+  targetDate,
+  currentTime,
+  tone = "dark",
+}: CountdownProps) => {
   const [timeRemaining, setTimeRemaining] = useState<TimeRemaining>(
     calculateTimeRemaining(targetDate, currentTime),
   );
   const [confettiLaunched, setConfettiLaunched] = useState(false);
+
+  const valueClass = tone === "brand" ? "text-surface" : "text-white";
+  // Fully opaque on brand bands: a dimmed label drops under AA on the lighter primaries.
+  const labelClass = tone === "brand" ? "text-surface" : "text-gray-400";
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -121,7 +132,7 @@ export const Countdown = ({ targetDate, currentTime }: CountdownProps) => {
 
   if (timeRemaining.isPast) {
     return (
-      <div className="text-center text-gray-400 text-sm">
+      <div className={`text-center text-sm ${labelClass}`}>
         <p>Event has concluded</p>
       </div>
     );
@@ -139,30 +150,30 @@ export const Countdown = ({ targetDate, currentTime }: CountdownProps) => {
 
   return (
     <div className="text-center">
-      <div className="flex justify-center space-x-4 text-white">
+      <div className={`flex justify-center space-x-4 ${valueClass}`}>
         <div className="flex flex-col">
           <span className="font-bold font-mikkelwind text-4xl">
             {timeRemaining.days}
           </span>
-          <span className="text-gray-400 text-xs">days</span>
+          <span className={`text-xs ${labelClass}`}>days</span>
         </div>
         <div className="flex flex-col">
           <span className="font-bold font-mikkelwind text-4xl">
             {timeRemaining.hours}
           </span>
-          <span className="text-gray-400 text-xs">hours</span>
+          <span className={`text-xs ${labelClass}`}>hours</span>
         </div>
         <div className="flex flex-col">
           <span className="font-bold font-mikkelwind text-4xl">
             {timeRemaining.minutes}
           </span>
-          <span className="text-gray-400 text-xs">min</span>
+          <span className={`text-xs ${labelClass}`}>min</span>
         </div>
         <div className="flex flex-col">
           <span className="font-bold font-mikkelwind text-4xl">
             {timeRemaining.seconds}
           </span>
-          <span className="text-gray-400 text-xs">sec</span>
+          <span className={`text-xs ${labelClass}`}>sec</span>
         </div>
       </div>
     </div>
