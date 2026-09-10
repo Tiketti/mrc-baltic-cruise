@@ -3,7 +3,7 @@ interface CityCardProps {
   date: string;
   imageUrlSmall: string;
   imageUrl: string;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 export const CityCard = ({
@@ -22,14 +22,22 @@ export const CityCard = ({
     >
       <h3 className="max-w-fit bg-surface px-16">{city}</h3>
       <div className="p-4 text-center">
-        <p className="bg-surface text-gray-500">{date}</p>
-        <button
-          type="button"
-          onClick={onClick}
-          className="mt-8 cursor-pointer rounded bg-surface px-4 py-2 text-white hover:bg-blue-600"
+        {/* Rounded corners read as "interactive", so the date only borrows them
+            when there's no agenda button to own that look. */}
+        <p
+          className={`bg-surface px-4 py-2 text-gray-500 ${onClick ? "" : "rounded"}`}
         >
-          View Agenda
-        </button>
+          {date}
+        </p>
+        {onClick && (
+          <button
+            type="button"
+            onClick={onClick}
+            className="mt-8 cursor-pointer rounded bg-surface px-4 py-2 text-white hover:bg-blue-600"
+          >
+            View Agenda
+          </button>
+        )}
       </div>
     </div>
   );

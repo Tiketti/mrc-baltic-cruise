@@ -1,10 +1,12 @@
 interface LogoProps {
-  variant?: "2025" | "2026";
+  variant?: "2025" | "2026" | "2027";
 }
 
 const logoSrc = {
   "2025": "assets/mrc_baltic_cruise_logo.svg",
   "2026": "assets/mrc_baltic_cruise_logo_2026.png",
+  // Reusing the original mark until the 2027 logo exists — it carries no year.
+  "2027": "assets/mrc_baltic_cruise_logo.svg",
 } as const;
 
 export const Logo = ({ variant = "2025" }: LogoProps) => {

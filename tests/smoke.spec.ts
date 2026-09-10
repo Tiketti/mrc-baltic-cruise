@@ -1,4 +1,83 @@
-import { expect, test } from "@playwright/test";
+import { type Page, expect, test } from "@playwright/test";
+
+/**
+ * Asserts every nav tab sits within the nav's own bounds, i.e. the row isn't
+ * overflowing into a horizontal scroll. Returns the nav box for further checks.
+ */
+const expectNavTabsToFit = async (page: Page) => {
+  const nav = await page.locator("nav").boundingBox();
+  const first = await page
+    .getByRole("link", { name: "Cruise '27" })
+    .boundingBox();
+  const last = await page
+    .getByRole("link", { name: "Brewery Run" })
+    .boundingBox();
+
+  // boundingBox() resolves to null for anything not rendered, so fail loudly rather
+  // than letting the comparisons below blow up on a property of null.
+  if (!nav || !first || !last) {
+    throw new Error("Navigation did not render its tabs");
+  }
+
+  expect(first.x).toBeGreaterThanOrEqual(nav.x);
+  expect(last.x + last.width).toBeLessThanOrEqual(nav.x + nav.width);
+
+  return nav;
+};
+
+test.describe("Baltic Cruise 2027 placeholder", () => {
+  test("should be the landing page", async ({ page }) => {
+    await page.goto("/");
+
+    await expect(page).toHaveURL(/\/baltic-cruise-3$/);
+    await expect(page).toHaveTitle("MRC Baltic Cruise 2027");
+  });
+
+  test("should show the three cities in route order with Easter dates", async ({
+    page,
+  }) => {
+    await page.goto("/baltic-cruise-3");
+
+    await expect(page.getByRole("heading", { level: 3 })).toHaveText([
+      "Tallinn",
+      "Helsinki",
+      "Stockholm",
+    ]);
+
+    await expect(page.getByText("Fri 26.3.2027")).toBeVisible();
+    await expect(page.getByText("Sat 27.3.2027")).toBeVisible();
+    await expect(page.getByText("Sun 28.3.2027")).toBeVisible();
+
+    await expect(page.getByText("March 26–28, 2027 (Easter)")).toBeVisible();
+  });
+
+  test("should fit all four nav tabs on a 375px screen", async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 667 });
+    await page.goto("/baltic-cruise-3");
+
+    const nav = await expectNavTabsToFit(page);
+
+    // Going edge to edge is what buys back the room at this width.
+    expect(nav.x).toBe(0);
+  });
+
+  test("should float as an inset bar from 390px up", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 667 });
+    await page.goto("/baltic-cruise-3");
+
+    const nav = await expectNavTabsToFit(page);
+
+    expect(nav.x).toBeGreaterThan(0);
+  });
+
+  test("should not offer agendas yet", async ({ page }) => {
+    await page.goto("/baltic-cruise-3");
+
+    await expect(page.getByRole("button", { name: "View Agenda" })).toHaveCount(
+      0,
+    );
+  });
+});
 
 test.describe("Smoke tests", () => {
   test("should load the main page", async ({ page }) => {

@@ -2,7 +2,11 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
+    // Note: this replaces Tailwind's default palette rather than extending it,
+    // so only the colors listed here generate utilities.
     colors: {
+      transparent: "transparent",
+      current: "currentColor",
       // Palette: Mikkeller Brand Book colors, named by appearance.
       // Use directly for one-off color needs (e.g. bg-brand-peach).
       brand: {

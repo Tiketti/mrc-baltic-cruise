@@ -3,6 +3,7 @@ import { Navigation } from "./components/Navigation";
 import { Admin } from "./pages/Admin";
 import { BalticCruise2025 } from "./pages/BalticCruise2025";
 import { BalticCruise2026 } from "./pages/BalticCruise2026";
+import { BalticCruise2027 } from "./pages/BalticCruise2027";
 import { BreweryRun } from "./pages/BreweryRun";
 
 function App() {
@@ -17,10 +18,10 @@ function App() {
       <Navigation />
       <main id="main-content">
         <Routes>
-          {/* Redirect root to the latest event (Baltic Cruise 2026) */}
+          {/* Redirect root to the latest event (Baltic Cruise 2027) */}
           <Route
             path="/"
-            element={<Navigate to="/baltic-cruise-2" replace />}
+            element={<Navigate to="/baltic-cruise-3" replace />}
           />
 
           {/* Admin dashboard for updating LiveTrack URL */}
@@ -33,6 +34,10 @@ function App() {
           {/* Baltic Cruise 2026 routes (multiple aliases) */}
           <Route path="/baltic-cruise-2" element={<BalticCruise2026 />} />
           <Route path="/baltic-cruise-2026" element={<BalticCruise2026 />} />
+
+          {/* Baltic Cruise 2027 routes (multiple aliases) */}
+          <Route path="/baltic-cruise-3" element={<BalticCruise2027 />} />
+          <Route path="/baltic-cruise-2027" element={<BalticCruise2027 />} />
 
           {/* Brewery Run 2025 */}
           <Route path="/brewery-run" element={<BreweryRun />} />
