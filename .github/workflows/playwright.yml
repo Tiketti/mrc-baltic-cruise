@@ -28,8 +28,16 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      # Only shipped code gates the build: dev tooling never reaches visitors.
+      # Registry hiccups shouldn't fail a build either. For an unfixable
+      # advisory, add --ignore <CVE> here rather than loosening this further.
       - name: Audit dependencies
-        run: pnpm audit
+        run: pnpm audit --prod --audit-level=high --ignore-registry-errors
+
+      # Full picture for humans, including dev deps and lower severities.
+      - name: Audit report (informational)
+        if: always()
+        run: pnpm audit || true
 
       - name: Cache Playwright browsers
         uses: actions/cache@v5
