@@ -152,7 +152,7 @@ export const BreweryRun = () => {
 
   return (
     <div data-theme="2026" className="min-h-screen bg-gray-900 text-white">
-      <header className="bg-primary px-2 pt-16 pb-3 text-center shadow-lg shadow-primary sm:pt-20">
+      <header className="bg-primary px-2 pt-16 pb-3 text-center shadow-edge-to-edge sm:pt-20">
         {/* biome-ignore lint/a11y/useKeyWithClickEvents: Easter egg feature - intentionally mouse/tap only */}
         <h1
           className="cursor-pointer select-none p-2 text-4xl text-surface tracking-wide sm:text-5xl md:text-6xl"

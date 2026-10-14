@@ -29,6 +29,12 @@ export default {
       surface: "rgb(var(--color-surface) / <alpha-value>)",
     },
     extend: {
+      boxShadow: {
+        // For full-width bars. A spread wider than half the blur pushes the shadow's faded
+        // ends past the screen edges; shadow-lg's negative spread tapers in from both
+        // sides, which left the bar's bare bottom edge showing in the corners.
+        "edge-to-edge": "0 -2px 15px 12px rgb(var(--color-primary))",
+      },
       fontFamily: {
         sans: ["Inter var", "sans-serif"],
         mikkelwind: ["MikkelWind", "sans-serif"],
