@@ -7,21 +7,20 @@ const timeToMinutes = (timeStr: string): number => {
   return hours * 60 + minutes;
 };
 
-// Calculate current brewery run status based on current time
+export const isSameDay = (a: Date, b: Date): boolean =>
+  a.toDateString() === b.toDateString();
+
+// Calculate current brewery run status based on the time of day.
+// Callers pass no time when it isn't the event day, so nothing gets highlighted.
 export const calculateCurrentStatus = (
   breweryStops: BreweryStop[],
   currentTime?: Date,
 ) => {
-  const now = currentTime || new Date();
-
-  // Only show highlighting if we have a mock time (testing) or it's actually the event date
-  // For now, only highlight when testing with mockTime parameter
   if (!currentTime) {
-    // No mock time provided, so don't highlight anything
     return { currentStopIndex: -1, currentTransitionIndex: -1 };
   }
 
-  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+  const currentMinutes = currentTime.getHours() * 60 + currentTime.getMinutes();
 
   let currentStopIndex = -1;
   let currentTransitionIndex = -1;

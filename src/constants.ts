@@ -5,6 +5,9 @@ export const CLOUDFLARE_WORKER_URL =
 // Fallback static route image (used when no LiveTrack URL is set)
 export const FALLBACK_MAP_URL = "/assets/brewery-run-route.png";
 
+// The image above is last year's route. Flip to true once this year's replaces it.
+export const SHOW_ROUTE_TAB = false;
+
 // Maximum age (in hours) for LiveTrack URL to be considered active
 export const LIVE_TRACK_MAX_AGE_HOURS = 7;
 

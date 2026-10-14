@@ -1,4 +1,9 @@
-import { breweryStops } from "../breweryData";
+import {
+  breweryStops,
+  eventDate,
+  fallbackTotalDistance,
+  totalDistance,
+} from "../breweryData";
 import { BreweryCard } from "./BreweryCard";
 
 interface ScheduleTabProps {
@@ -28,13 +33,11 @@ export const ScheduleTab = ({
       <div className="mt-8 text-center text-gray-400 text-sm">
         <p>
           Total Distance:{" "}
-          {breweryStops.reduce(
-            (total, stop) => total + (stop.distanceToNext || 0),
-            0,
-          )}{" "}
-          km
+          {totalDistance === null
+            ? fallbackTotalDistance
+            : `${totalDistance} km`}
         </p>
-        <p className="mt-2">Helsinki • {new Date().getFullYear()}</p>
+        <p className="mt-2">Helsinki • {eventDate.getFullYear()}</p>
       </div>
     </>
   );
