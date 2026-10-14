@@ -10,7 +10,7 @@ import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { useCurrentTime } from "../hooks/useCurrentTime";
 import { useLiveTrackUrl } from "../hooks/useLiveTrackUrl";
 import { calculateCurrentStatus, isSameDay } from "../utils/timeCalculations";
-import { FALLBACK_MAP_URL } from "../constants";
+import { FALLBACK_MAP_URL, SHOW_ROUTE_TAB } from "../constants";
 
 type TabType = "schedule" | "route" | "live";
 
@@ -83,7 +83,7 @@ export const BreweryRun = () => {
       );
     }
 
-    if (hash === "route" || hash === "map") {
+    if (SHOW_ROUTE_TAB && (hash === "route" || hash === "map")) {
       return "route";
     }
     if (hash === "live") {
@@ -95,17 +95,25 @@ export const BreweryRun = () => {
 
   const [activeTab, setActiveTab] = useState<TabType>(getInitialTab);
 
-  // Update hash when tab changes
+  // Update hash when tab changes. Assigning location.hash would be a navigation, which
+  // WebKit lets cancel one already underway, e.g. a link tapped while the page settles.
+  // It would also stack up history entries that Back can't turn into tab switches.
   useEffect(() => {
-    window.location.hash = activeTab;
+    window.history.replaceState(window.history.state, "", `#${activeTab}`);
   }, [activeTab]);
 
-  // If live tab is active but live track is no longer recent, switch to route
+  // If live tab is active but live track is no longer recent, fall back to the route
+  // map, or the schedule while there's no map to show
   useEffect(() => {
     if (activeTab === "live" && !isLiveTrackRecent) {
-      setActiveTab("route");
+      setActiveTab(SHOW_ROUTE_TAB ? "route" : "schedule");
     }
   }, [activeTab, isLiveTrackRecent]);
+
+  const showLiveTab = Boolean(isLiveTrackRecent && liveTrackUrl);
+
+  // A tab bar with only "Schedule" in it would be a pointless button
+  const showTabBar = SHOW_ROUTE_TAB || showLiveTab;
 
   // Parse mock time from URL query parameter for testing
   // Format: ?mockTime=13:00, 13.00 or 9:30 (just the time, assumes today's date)
@@ -159,55 +167,59 @@ export const BreweryRun = () => {
           <Countdown targetDate={eventDate} currentTime={mockTime} />
         </div>
 
-        <div className="mb-2 flex rounded-lg bg-gray-800 p-1">
-          <button
-            type="button"
-            onClick={() => setActiveTab("schedule")}
-            className={`flex-1 rounded-md border-0 px-4 py-2 text-center font-medium text-sm outline-none transition-colors ${
-              activeTab === "schedule"
-                ? "bg-primary text-white shadow-sm"
-                : "bg-transparent text-gray-300 hover:text-white"
-            }`}
-            style={activeTab === "schedule" ? { color: "white" } : undefined}
-          >
-            Schedule
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveTab("route")}
-            className={`flex-1 rounded-md border-0 px-4 py-2 text-center font-medium text-sm outline-none transition-colors ${
-              activeTab === "route"
-                ? "bg-primary text-white shadow-sm"
-                : "bg-transparent text-gray-300 hover:text-white"
-            }`}
-            style={activeTab === "route" ? { color: "white" } : undefined}
-          >
-            Route
-          </button>
-          {isLiveTrackRecent && liveTrackUrl && (
+        {showTabBar && (
+          <div className="mb-2 flex rounded-lg bg-gray-800 p-1">
             <button
               type="button"
-              onClick={() => setActiveTab("live")}
+              onClick={() => setActiveTab("schedule")}
               className={`flex-1 rounded-md border-0 px-4 py-2 text-center font-medium text-sm outline-none transition-colors ${
-                activeTab === "live"
+                activeTab === "schedule"
                   ? "bg-primary text-white shadow-sm"
                   : "bg-transparent text-gray-300 hover:text-white"
               }`}
-              style={activeTab === "live" ? { color: "white" } : undefined}
+              style={activeTab === "schedule" ? { color: "white" } : undefined}
             >
-              <span className="inline-flex items-center gap-1.5">
-                Live
-                {isLive && (
-                  <Eye
-                    className="animate-pulse text-red-500"
-                    size={16}
-                    strokeWidth={2.5}
-                  />
-                )}
-              </span>
+              Schedule
             </button>
-          )}
-        </div>
+            {SHOW_ROUTE_TAB && (
+              <button
+                type="button"
+                onClick={() => setActiveTab("route")}
+                className={`flex-1 rounded-md border-0 px-4 py-2 text-center font-medium text-sm outline-none transition-colors ${
+                  activeTab === "route"
+                    ? "bg-primary text-white shadow-sm"
+                    : "bg-transparent text-gray-300 hover:text-white"
+                }`}
+                style={activeTab === "route" ? { color: "white" } : undefined}
+              >
+                Route
+              </button>
+            )}
+            {showLiveTab && (
+              <button
+                type="button"
+                onClick={() => setActiveTab("live")}
+                className={`flex-1 rounded-md border-0 px-4 py-2 text-center font-medium text-sm outline-none transition-colors ${
+                  activeTab === "live"
+                    ? "bg-primary text-white shadow-sm"
+                    : "bg-transparent text-gray-300 hover:text-white"
+                }`}
+                style={activeTab === "live" ? { color: "white" } : undefined}
+              >
+                <span className="inline-flex items-center gap-1.5">
+                  Live
+                  {isLive && (
+                    <Eye
+                      className="animate-pulse text-red-500"
+                      size={16}
+                      strokeWidth={2.5}
+                    />
+                  )}
+                </span>
+              </button>
+            )}
+          </div>
+        )}
 
         {activeTab === "schedule" ? (
           <ScheduleTab

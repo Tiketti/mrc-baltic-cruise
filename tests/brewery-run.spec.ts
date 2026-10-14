@@ -6,6 +6,7 @@ import {
   fallbackTotalDistance,
   totalDistance,
 } from "../src/breweryData";
+import { SHOW_ROUTE_TAB } from "../src/constants";
 
 const eventYear = eventDate.getFullYear();
 const firstStop = breweryStops[0];
@@ -13,6 +14,17 @@ const lastStop = breweryStops[breweryStops.length - 1];
 
 const stopHeading = (page: Page, stop: BreweryStop) =>
   page.getByRole("heading", { name: stop.name, exact: true });
+
+// The tab bar only appears when there's something besides the schedule to switch to
+const expectTabs = async (page: Page, { live }: { live: boolean }) => {
+  const tab = (name: string) => page.getByRole("button", { name, exact: true });
+
+  await expect(tab("Schedule")).toHaveCount(SHOW_ROUTE_TAB || live ? 1 : 0);
+  await expect(tab("Route")).toHaveCount(SHOW_ROUTE_TAB ? 1 : 0);
+  await expect(page.getByRole("button", { name: /^Live/ })).toHaveCount(
+    live ? 1 : 0,
+  );
+};
 
 // Mock the LiveTrack API to return no active event so tests don't
 // depend on the real Cloudflare Worker state.
@@ -43,15 +55,21 @@ test.describe("Brewery Run", () => {
     ).toBeVisible();
   });
 
-  test("should have Schedule and Route tabs by default", async ({ page }) => {
+  test("should show only the available tabs by default", async ({ page }) => {
     await page.goto("/brewery-run");
 
-    // Check that Schedule and Route tabs are visible
-    await expect(page.getByRole("button", { name: "Schedule" })).toBeVisible();
-    await expect(page.getByRole("button", { name: "Route" })).toBeVisible();
+    await expectTabs(page, { live: false });
+  });
 
-    // Live tab should not be visible without active event
-    await expect(page.getByRole("button", { name: "Live" })).not.toBeVisible();
+  test("should open the schedule when #route is requested but hidden", async ({
+    page,
+  }) => {
+    test.skip(SHOW_ROUTE_TAB, "Only applies while the route tab is hidden");
+
+    await page.goto("/brewery-run#route");
+
+    await expect(stopHeading(page, firstStop)).toBeVisible();
+    await expect(page.getByRole("img", { name: "Route Map" })).toHaveCount(0);
   });
 
   test("should show schedule content by default", async ({ page }) => {
@@ -71,6 +89,8 @@ test.describe("Brewery Run", () => {
   });
 
   test("should switch between Schedule and Route tabs", async ({ page }) => {
+    test.skip(!SHOW_ROUTE_TAB, "Route tab is hidden");
+
     await page.goto("/brewery-run");
 
     // Click Route tab
@@ -132,6 +152,8 @@ test.describe("Brewery Run", () => {
   });
 
   test("should respect URL hash for initial tab", async ({ page, context }) => {
+    test.skip(!SHOW_ROUTE_TAB, "Route tab is hidden");
+
     // Test #route hash by loading in a fresh page context
     await page.goto("/brewery-run#route");
     await expect(page.getByRole("img", { name: "Route Map" })).toBeVisible();
@@ -251,18 +273,39 @@ test.describe("Brewery Run - Live Track Feature", () => {
     // Wait a moment for API call to complete
     await page.waitForTimeout(1000);
 
-    // Live tab should NOT be visible
-    await expect(page.getByRole("button", { name: "Live" })).not.toBeVisible();
+    await expectTabs(page, { live: false });
+  });
 
-    // Only Schedule and Route tabs should be visible
-    await expect(page.getByRole("button", { name: "Schedule" })).toBeVisible();
-    await expect(page.getByRole("button", { name: "Route" })).toBeVisible();
+  test("should hide the Live tab when the API fails", async ({
+    page,
+    context,
+  }) => {
+    await context.route(
+      "**/livetrack-api.perttu-468.workers.dev/api/livetrack",
+      (route) => {
+        route.fulfill({
+          status: 500,
+          contentType: "application/json",
+          body: JSON.stringify({ error: "Internal server error" }),
+        });
+      },
+    );
+
+    await page.goto("/brewery-run");
+
+    // Wait a moment for API call to complete
+    await page.waitForTimeout(1000);
+
+    await expectTabs(page, { live: false });
+    await expect(stopHeading(page, firstStop)).toBeVisible();
   });
 
   test("should fallback to route map when API fails", async ({
     page,
     context,
   }) => {
+    test.skip(!SHOW_ROUTE_TAB, "Route tab is hidden");
+
     // Mock API failure
     await context.route(
       "**/livetrack-api.perttu-468.workers.dev/api/livetrack",
@@ -334,7 +377,12 @@ test.describe("Brewery Run - Live Track Feature", () => {
     await page.waitForTimeout(1000);
 
     // Live tab should no longer be visible (> 2 hours and not live)
-    await expect(page.getByRole("button", { name: "Live" })).not.toBeVisible();
+    await expectTabs(page, { live: false });
+    await expect(
+      SHOW_ROUTE_TAB
+        ? page.getByRole("img", { name: "Route Map" })
+        : stopHeading(page, firstStop),
+    ).toBeVisible();
   });
 });
 
@@ -540,11 +588,12 @@ test.describe("Brewery Run - Highlighting with actual time", () => {
 });
 
 test.describe("Brewery Run - Admin Navigation", () => {
-  test("should navigate to admin page from map", async ({ page }) => {
+  test("should navigate to admin page from the brewery run page", async ({
+    page,
+  }) => {
+    // Leaving straight away is deliberate: the page rewrites #route while it settles,
+    // and that used to cancel the next navigation in WebKit
     await page.goto("/brewery-run#route");
-
-    // Admin link should be accessible (though might not be visible in default view)
-    // This is more of a smoke test to ensure the route exists
     await page.goto("/admin");
 
     await expect(
