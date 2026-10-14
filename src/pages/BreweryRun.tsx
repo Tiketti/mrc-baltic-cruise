@@ -152,7 +152,12 @@ export const BreweryRun = () => {
 
   return (
     <div data-theme="2026" className="min-h-screen bg-gray-900 text-white">
-      <header className="bg-primary px-2 pt-16 pb-3 text-center shadow-edge-to-edge sm:pt-20">
+      {/* The nav floats 1rem below the top edge, relying on the cruise pages' sticky header
+          to fill in behind it. This header scrolls away, so this strip stays pinned behind the
+          nav instead. 4.75rem clears the nav's bottom edge, which sits at ~4.6rem. */}
+      <div className="sticky top-0 z-40 h-[4.75rem] bg-primary shadow-edge-to-edge" />
+
+      <header className="bg-primary px-2 pb-3 text-center shadow-edge-to-edge">
         {/* biome-ignore lint/a11y/useKeyWithClickEvents: Easter egg feature - intentionally mouse/tap only */}
         <h1
           className="cursor-pointer select-none p-2 text-4xl text-surface tracking-wide sm:text-5xl md:text-6xl"
