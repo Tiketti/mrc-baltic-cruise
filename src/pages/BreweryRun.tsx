@@ -7,8 +7,9 @@ import { Countdown } from "../components/Countdown";
 import { MapTab } from "../components/MapTab";
 import { ScheduleTab } from "../components/ScheduleTab";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
+import { useCurrentTime } from "../hooks/useCurrentTime";
 import { useLiveTrackUrl } from "../hooks/useLiveTrackUrl";
-import { calculateCurrentStatus } from "../utils/timeCalculations";
+import { calculateCurrentStatus, isSameDay } from "../utils/timeCalculations";
 import { FALLBACK_MAP_URL } from "../constants";
 
 type TabType = "schedule" | "route" | "live";
@@ -20,7 +21,7 @@ export const BreweryRun = () => {
 
   const navigate = useNavigate();
   const tapCountRef = useRef(0);
-  const tapTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const tapTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleHeaderTap = () => {
     tapCountRef.current += 1;
@@ -65,7 +66,22 @@ export const BreweryRun = () => {
 
   // Initialize tab from URL hash
   const getInitialTab = (): TabType => {
-    const hash = window.location.hash.slice(1);
+    const [hash, misplacedQuery] = window.location.hash.slice(1).split("?");
+
+    // The page appends #tab on load, so a ?mockTime typed onto the end of the URL
+    // lands inside the hash. Move it to the real query string where it gets read.
+    if (misplacedQuery) {
+      const { pathname, search } = window.location;
+      const query = search
+        ? `${search}&${misplacedQuery}`
+        : `?${misplacedQuery}`;
+
+      window.history.replaceState(
+        window.history.state,
+        "",
+        `${pathname}${query}#${hash}`,
+      );
+    }
 
     if (hash === "route" || hash === "map") {
       return "route";
@@ -92,28 +108,38 @@ export const BreweryRun = () => {
   }, [activeTab, isLiveTrackRecent]);
 
   // Parse mock time from URL query parameter for testing
-  // Format: ?mockTime=13:00 (just the time, assumes today's date)
+  // Format: ?mockTime=13:00, 13.00 or 9:30 (just the time, assumes today's date)
   const getMockTime = (): Date | undefined => {
     const urlParams = new URLSearchParams(window.location.search);
-    const mockTimeParam = urlParams.get("mockTime");
+    const match = urlParams.get("mockTime")?.match(/^(\d{1,2})[:.](\d{2})$/);
 
-    if (mockTimeParam && /^\d{2}:\d{2}$/.test(mockTimeParam)) {
-      const [hours, minutes] = mockTimeParam.split(":").map(Number);
-      const mockDate = new Date();
-      mockDate.setHours(hours, minutes, 0, 0);
-
-      return mockDate;
+    if (!match) {
+      return undefined;
     }
 
-    return undefined;
+    const hours = Number(match[1]);
+    const minutes = Number(match[2]);
+
+    if (hours > 23 || minutes > 59) {
+      return undefined;
+    }
+
+    const mockDate = new Date();
+    mockDate.setHours(hours, minutes, 0, 0);
+
+    return mockDate;
   };
 
-  // Calculate current status based on time (real or mocked)
   const mockTime = getMockTime();
+  const now = useCurrentTime();
+
+  // Real time only highlights on the event day, otherwise a visit at 14:00 on any
+  // Tuesday would claim the group is at a brewery. mockTime ignores the date for testing.
+  const statusTime = mockTime ?? (isSameDay(now, eventDate) ? now : undefined);
 
   const { currentStopIndex, currentTransitionIndex } = calculateCurrentStatus(
     breweryStops,
-    mockTime,
+    statusTime,
   );
 
   return (

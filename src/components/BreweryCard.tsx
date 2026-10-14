@@ -1,3 +1,4 @@
+import { SportShoe } from "lucide-react";
 import type { BreweryStop } from "../breweryData";
 
 interface BreweryCardProps {
@@ -14,9 +15,10 @@ export const BreweryCard = ({
   isCurrentTransition = false,
 }: BreweryCardProps) => {
   return (
-    <div className="relative">
+    <div className="relative" data-stop-id={stop.id}>
       {/* Brewery Card */}
       <div
+        aria-current={isCurrentStop ? "step" : undefined}
         className={`relative overflow-hidden rounded-2xl text-gray-900 shadow-lg transition-all duration-1000 ${
           isCurrentStop
             ? "animate-pulse-slow bg-primary/20 shadow-xl ring-4 ring-primary"
@@ -109,7 +111,7 @@ export const BreweryCard = ({
       </div>
 
       {/* Distance Indicator (not for last stop) */}
-      {!isLast && stop.distanceToNext && (
+      {!isLast && (
         <div
           className={`flex items-center justify-center transition-all duration-1000 ${
             isCurrentTransition ? "animate-pulse py-6" : "py-4"
@@ -130,13 +132,20 @@ export const BreweryCard = ({
 
             {/* Distance */}
             <span
-              className={`font-bold transition-all ${
+              className={`inline-flex items-center gap-2 font-bold transition-all ${
                 isCurrentTransition
                   ? "text-2xl text-black"
                   : "font-semibold text-lg text-white"
               }`}
             >
-              {stop.distanceToNext} km
+              {stop.distanceToNext === undefined ? (
+                <>
+                  <SportShoe aria-hidden="true" className="size-[1em]" />
+                  Running
+                </>
+              ) : (
+                `${stop.distanceToNext} km`
+              )}
             </span>
 
             {/* Arrow pointing down */}

@@ -25,7 +25,6 @@ export const breweryStops: BreweryStop[] = [
     logoBoxClasses: "w-48 bg-white px-3",
     meetTime: "12:30",
     departTime: "13:00",
-    distanceToNext: 3.5,
   },
   {
     id: "masis",
@@ -33,7 +32,6 @@ export const breweryStops: BreweryStop[] = [
     logo: "/assets/brewery-logos/masis.png",
     arriveTime: "13:25",
     departTime: "14:05",
-    distanceToNext: 3.5,
   },
   {
     id: "ukko-munkki",
@@ -42,7 +40,6 @@ export const breweryStops: BreweryStop[] = [
     logoClasses: "p-2",
     arriveTime: "14:40",
     departTime: "15:20",
-    distanceToNext: 3.5,
   },
   {
     id: "viisi-pennia",
@@ -51,7 +48,6 @@ export const breweryStops: BreweryStop[] = [
     logoBoxClasses: "w-44 bg-white px-2",
     arriveTime: "15:40",
     departTime: "16:20",
-    distanceToNext: 3.5,
   },
   {
     id: "salamanation",
@@ -59,7 +55,6 @@ export const breweryStops: BreweryStop[] = [
     logo: "/assets/brewery-logos/salamanation.svg",
     arriveTime: "16:40",
     departTime: "17:20",
-    distanceToNext: 3.5,
   },
   {
     id: "olarin-panimo",
@@ -68,7 +63,6 @@ export const breweryStops: BreweryStop[] = [
     logoClasses: "mix-blend-multiply", // Blends away white background
     arriveTime: "17:40",
     departTime: "18:20",
-    distanceToNext: 3.5,
   },
   {
     id: "oluthuone-haka",
@@ -81,11 +75,18 @@ export const breweryStops: BreweryStop[] = [
   },
 ];
 
-// Rounded because summing decimals produces float noise like 21.599999
-export const totalDistance =
-  Math.round(
-    breweryStops.reduce(
-      (total, stop) => total + (stop.distanceToNext || 0),
-      0,
-    ) * 10,
-  ) / 10;
+// Shown instead of totalDistance until the organizers confirm every leg
+export const fallbackTotalDistance = "approx. 20 km";
+
+const legStops = breweryStops.slice(0, -1);
+
+// A sum over partial data would understate the route, so any missing leg makes it unknown
+export const totalDistance: number | null = legStops.every(
+  (stop) => stop.distanceToNext !== undefined,
+)
+  ? // Rounded because summing decimals produces float noise like 21.599999
+    Math.round(
+      legStops.reduce((total, stop) => total + (stop.distanceToNext ?? 0), 0) *
+        10,
+    ) / 10
+  : null;
