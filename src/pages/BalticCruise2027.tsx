@@ -9,7 +9,7 @@ import { cities2027, faqItems2027 } from "../data2027";
 import { useDocumentTitle } from "../hooks/useDocumentTitle";
 
 // Module scope keeps the reference stable — Countdown resets its interval whenever targetDate changes.
-const CRUISE_START = new Date(2027, 2, 26);
+const CRUISE_START = new Date(2027, 2, 26, 12, 45);
 
 export const BalticCruise2027 = () => {
   useDocumentTitle("MRC Baltic Cruise 2027");

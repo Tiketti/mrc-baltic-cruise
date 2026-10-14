@@ -1,9 +1,14 @@
-import { useEffect, useState } from "react";
 import confetti from "canvas-confetti";
+import { useEffect, useState } from "react";
+
+// Once per browser tab session: covers a reload, or hopping to another page and back
+const CONFETTI_STORAGE_KEY = "confettiLaunched" as const;
 
 interface CountdownProps {
+  // Date and time the event starts; the countdown ends and confetti fires at this moment
   targetDate: Date;
-  currentTime?: Date;
+  // Shifts the clock for manual testing, e.g. BreweryRun's ?mockTime
+  timeOffsetMs?: number;
   // "dark" suits the near-black Brewery Run page; "brand" is for the lighter primary bands,
   // where gray-400 labels drop below AA contrast.
   tone?: "dark" | "brand";
@@ -20,23 +25,15 @@ interface TimeRemaining {
 
 const calculateTimeRemaining = (
   targetDate: Date,
-  currentTime?: Date,
+  timeOffsetMs = 0,
 ): TimeRemaining => {
-  const now = currentTime || new Date();
+  const now = new Date(Date.now() + timeOffsetMs);
+  const difference = targetDate.getTime() - now.getTime();
+  const isEventDay = now.toDateString() === targetDate.toDateString();
 
-  // Create event start time at 12:45 on the target date
-  const eventStartTime = new Date(targetDate);
-  eventStartTime.setHours(12, 45, 0, 0);
-
-  const difference = eventStartTime.getTime() - now.getTime();
-
-  // Check if the event has started (it's past 12:45 on event day)
-  const isEventStarted =
-    difference <= 0 && now.toDateString() === targetDate.toDateString();
-
-  // Check if event day has completely passed
-  const isPast =
-    now.toDateString() !== targetDate.toDateString() && difference < 0;
+  // Started stays true for the rest of the event day, then the event counts as over
+  const isEventStarted = difference <= 0 && isEventDay;
+  const isPast = difference < 0 && !isEventDay;
 
   if (isPast) {
     return {
@@ -70,15 +67,31 @@ const calculateTimeRemaining = (
   return { days, hours, minutes, seconds, isEventStarted, isPast };
 };
 
+// Storage can throw, e.g. when it's disabled. Missing confetti beats a crashed page.
+const hasLaunchedConfetti = () => {
+  try {
+    return sessionStorage.getItem(CONFETTI_STORAGE_KEY) === "true";
+  } catch {
+    return false;
+  }
+};
+
+const markConfettiLaunched = () => {
+  try {
+    sessionStorage.setItem(CONFETTI_STORAGE_KEY, "true");
+  } catch {
+    // Without storage the confetti can repeat on reload, which is harmless
+  }
+};
+
 export const Countdown = ({
   targetDate,
-  currentTime,
+  timeOffsetMs,
   tone = "dark",
 }: CountdownProps) => {
-  const [timeRemaining, setTimeRemaining] = useState<TimeRemaining>(
-    calculateTimeRemaining(targetDate, currentTime),
+  const [timeRemaining, setTimeRemaining] = useState<TimeRemaining>(() =>
+    calculateTimeRemaining(targetDate, timeOffsetMs),
   );
-  const [confettiLaunched, setConfettiLaunched] = useState(false);
 
   const valueClass = tone === "brand" ? "text-surface" : "text-white";
   // Fully opaque on brand bands: a dimmed label drops under AA on the lighter primaries.
@@ -86,16 +99,17 @@ export const Countdown = ({
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeRemaining(calculateTimeRemaining(targetDate, currentTime));
+      setTimeRemaining(calculateTimeRemaining(targetDate, timeOffsetMs));
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [targetDate, currentTime]);
+  }, [targetDate, timeOffsetMs]);
 
-  // Trigger confetti when event starts
+  // Fires both when the countdown hits zero with the page open, and when the page is first
+  // opened later on the event day. The session flag stops reloads from firing it again.
   useEffect(() => {
-    if (timeRemaining.isEventStarted && !confettiLaunched) {
-      setConfettiLaunched(true);
+    if (timeRemaining.isEventStarted && !hasLaunchedConfetti()) {
+      markConfettiLaunched();
 
       // Launch confetti with multiple bursts for maximum celebration!
       const duration = 3000;
@@ -128,7 +142,7 @@ export const Countdown = ({
         });
       }, 250);
     }
-  }, [timeRemaining.isEventStarted, confettiLaunched]);
+  }, [timeRemaining.isEventStarted]);
 
   if (timeRemaining.isPast) {
     return (

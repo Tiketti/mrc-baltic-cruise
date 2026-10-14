@@ -115,9 +115,10 @@ export const BreweryRun = () => {
   // A tab bar with only "Schedule" in it would be a pointless button
   const showTabBar = SHOW_ROUTE_TAB || showLiveTab;
 
-  // Parse mock time from URL query parameter for testing
-  // Format: ?mockTime=13:00, 13.00 or 9:30 (just the time, assumes today's date)
-  const getMockTime = (): Date | undefined => {
+  // ?mockTime=13:00 (also 13.00 or 9:30) pretends it's that time on the event day.
+  // It's an offset from the real clock rather than a frozen time, so the page keeps
+  // ticking: ?mockTime=12:29 shows the countdown hitting zero and the confetti a minute later.
+  const getMockOffsetMs = (): number | undefined => {
     const urlParams = new URLSearchParams(window.location.search);
     const match = urlParams.get("mockTime")?.match(/^(\d{1,2})[:.](\d{2})$/);
 
@@ -132,18 +133,21 @@ export const BreweryRun = () => {
       return undefined;
     }
 
-    const mockDate = new Date();
+    const mockDate = new Date(eventDate);
     mockDate.setHours(hours, minutes, 0, 0);
 
-    return mockDate;
+    return mockDate.getTime() - Date.now();
   };
 
-  const mockTime = getMockTime();
-  const now = useCurrentTime();
+  // Read once, after getInitialTab has moved a misplaced ?mockTime out of the hash.
+  // Recomputing on every render would reset the offset and freeze the mocked clock.
+  const [mockOffsetMs] = useState(getMockOffsetMs);
+  const realNow = useCurrentTime();
+  const now = new Date(realNow.getTime() + (mockOffsetMs ?? 0));
 
-  // Real time only highlights on the event day, otherwise a visit at 14:00 on any
-  // Tuesday would claim the group is at a brewery. mockTime ignores the date for testing.
-  const statusTime = mockTime ?? (isSameDay(now, eventDate) ? now : undefined);
+  // Only highlight on the event day, otherwise a visit at 14:00 on any Tuesday would
+  // claim the group is at a brewery
+  const statusTime = isSameDay(now, eventDate) ? now : undefined;
 
   const { currentStopIndex, currentTransitionIndex } = calculateCurrentStatus(
     breweryStops,
@@ -169,7 +173,7 @@ export const BreweryRun = () => {
 
       <div className="mx-auto w-full max-w-md px-4 py-8 md:max-w-2xl lg:max-w-4xl">
         <div className="mb-4">
-          <Countdown targetDate={eventDate} currentTime={mockTime} />
+          <Countdown targetDate={eventDate} timeOffsetMs={mockOffsetMs} />
         </div>
 
         {showTabBar && (

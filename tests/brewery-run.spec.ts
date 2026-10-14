@@ -587,6 +587,113 @@ test.describe("Brewery Run - Highlighting with actual time", () => {
   });
 });
 
+const eventStartTime = shiftTime(
+  "00:00",
+  eventDate.getHours() * 60 + eventDate.getMinutes(),
+);
+
+// canvas-confetti draws on a canvas it appends to <body> on the first burst
+const confettiCanvas = (page: Page) => page.locator("body > canvas");
+
+const confettiFlag = (page: Page) =>
+  page.evaluate(() => sessionStorage.getItem("confettiLaunched"));
+
+const expectConfetti = async (page: Page) => {
+  await expect(confettiCanvas(page)).toHaveCount(1);
+  expect(await confettiFlag(page)).toBe("true");
+};
+
+const expectNoConfetti = async (page: Page) => {
+  // Longer than the countdown's 1s tick plus the first 250ms burst
+  await page.waitForTimeout(1_500);
+  await expect(confettiCanvas(page)).toHaveCount(0);
+  expect(await confettiFlag(page)).toBeNull();
+};
+
+test.describe("Brewery Run - Confetti", () => {
+  test.beforeEach(async ({ context }) => {
+    await mockNoLiveTrack(context);
+  });
+
+  test("should launch on the first visit after the start on event day", async ({
+    page,
+  }) => {
+    await page.clock.setFixedTime(onEventDay(shiftTime(eventStartTime, 30)));
+    await page.goto("/brewery-run");
+
+    await expect(page.getByText("TODAY! LET'S GO!")).toBeVisible();
+    await expectConfetti(page);
+  });
+
+  test("should not launch again when reloading in the same session", async ({
+    page,
+  }) => {
+    await page.clock.setFixedTime(onEventDay(shiftTime(eventStartTime, 30)));
+    await page.goto("/brewery-run");
+    await expectConfetti(page);
+
+    await page.reload();
+
+    await expect(page.getByText("TODAY! LET'S GO!")).toBeVisible();
+    await page.waitForTimeout(1_500);
+    await expect(confettiCanvas(page)).toHaveCount(0);
+  });
+
+  test("should launch when the countdown hits zero with the page open", async ({
+    page,
+  }) => {
+    await page.clock.install({
+      time: new Date(onEventDay(eventStartTime).getTime() - 10_000),
+    });
+    await page.goto("/brewery-run");
+
+    await expect(page.getByText("sec", { exact: true })).toBeVisible();
+    expect(await confettiFlag(page)).toBeNull();
+
+    await page.clock.runFor(15_000);
+
+    await expect(page.getByText("TODAY! LET'S GO!")).toBeVisible();
+    await expectConfetti(page);
+  });
+
+  test("should not launch before the start on event day", async ({ page }) => {
+    await page.clock.setFixedTime(onEventDay(shiftTime(eventStartTime, -1)));
+    await page.goto("/brewery-run");
+
+    await expect(page.getByText("sec", { exact: true })).toBeVisible();
+    await expectNoConfetti(page);
+  });
+
+  test("should not launch the day after the event", async ({ page }) => {
+    await page.clock.setFixedTime(onEventDay(shiftTime(eventStartTime, 30), 1));
+    await page.goto("/brewery-run");
+
+    await expect(page.getByText("Event has concluded")).toBeVisible();
+    await expectNoConfetti(page);
+  });
+
+  test("should launch with a mockTime after the start", async ({ page }) => {
+    await page.clock.setFixedTime(onEventDay("10:00", -7));
+    await page.goto(`/brewery-run?mockTime=${shiftTime(eventStartTime, 30)}`);
+
+    await expect(page.getByText("TODAY! LET'S GO!")).toBeVisible();
+    await expectConfetti(page);
+  });
+
+  test("should keep a mockTime ticking up to the start", async ({ page }) => {
+    await page.clock.install({ time: onEventDay("10:00", -7) });
+    await page.goto(`/brewery-run?mockTime=${shiftTime(eventStartTime, -1)}`);
+
+    await expect(page.getByText("sec", { exact: true })).toBeVisible();
+    expect(await confettiFlag(page)).toBeNull();
+
+    await page.clock.runFor(2 * ONE_MINUTE_MS);
+
+    await expect(page.getByText("TODAY! LET'S GO!")).toBeVisible();
+    await expectConfetti(page);
+  });
+});
+
 test.describe("Brewery Run - Admin Navigation", () => {
   test("should navigate to admin page from the brewery run page", async ({
     page,
