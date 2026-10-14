@@ -3,71 +3,89 @@ export interface BreweryStop {
   name: string;
   logo: string; // Path to brewery logo
   logoClasses?: string; // CSS classes for logo styling
+  logoBoxClasses?: string; // Replaces the default square white logo box, e.g. for wide logos
   meetTime?: string; // First stop only
   arriveTime?: string; // All stops except first
+  arriveLabel?: string; // Overrides the "Arrive" label, last stop only
   departTime?: string; // All stops except last
   distanceToNext?: number; // Distance in km to next stop
   address?: string;
   website?: string;
 }
 
-// Event date: October 11, 2025 at 12:00 (first brewery meet time)
-export const eventDate = new Date(2025, 9, 11, 12, 0, 0); // Month is 0-indexed (9 = October)
+// Event date: October 17, 2026 at 12:30 (first brewery meet time)
+export const eventDate = new Date(2026, 9, 17, 12, 30, 0); // Month is 0-indexed (9 = October)
 
+// TODO: Add distanceToNext for each leg once distances are known
 export const breweryStops: BreweryStop[] = [
   {
-    id: "masis",
-    name: "Masis Brewery",
-    logo: "/assets/brewery-logos/masis.png",
-    meetTime: "12:00",
-    departTime: "12:45",
-    distanceToNext: 7.0,
-    address: "Helsinki, Finland",
+    id: "gallows-bird",
+    name: "Gallows Bird",
+    logo: "/assets/brewery-logos/gallowsbird.png",
+    logoBoxClasses: "w-48 bg-white px-3",
+    meetTime: "12:30",
+    departTime: "13:00",
+    distanceToNext: 3.5,
   },
   {
-    id: "solmu",
-    name: "Solmu Brewery",
-    logo: "/assets/brewery-logos/solmu.webp",
-    logoClasses: "brightness-0 saturate-100", // Makes logo black on transparent
-    arriveTime: "13:30",
-    departTime: "14:00",
-    distanceToNext: 4.3,
-    address: "Helsinki, Finland",
+    id: "masis",
+    name: "Masis Brewing",
+    logo: "/assets/brewery-logos/masis.png",
+    arriveTime: "13:25",
+    departTime: "14:05",
+    distanceToNext: 3.5,
+  },
+  {
+    id: "ukko-munkki",
+    name: "Ukko Munkki",
+    logo: "/assets/brewery-logos/ukkomunkki.png",
+    logoClasses: "p-2",
+    arriveTime: "14:40",
+    departTime: "15:20",
+    distanceToNext: 3.5,
+  },
+  {
+    id: "viisi-pennia",
+    name: "Viisi Penniä",
+    logo: "/assets/brewery-logos/viisipennia.png",
+    logoBoxClasses: "w-44 bg-white px-2",
+    arriveTime: "15:40",
+    departTime: "16:20",
+    distanceToNext: 3.5,
   },
   {
     id: "salamanation",
-    name: "Salamanation",
+    name: "SalamaNation",
     logo: "/assets/brewery-logos/salamanation.svg",
-    arriveTime: "14:30",
-    departTime: "15:15",
-    distanceToNext: 3.9,
-    address: "Helsinki, Finland",
+    arriveTime: "16:40",
+    departTime: "17:20",
+    distanceToNext: 3.5,
   },
   {
     id: "olarin-panimo",
     name: "Olarin Panimo",
     logo: "/assets/brewery-logos/olarinpanimo.png",
     logoClasses: "mix-blend-multiply", // Blends away white background
-    arriveTime: "15:45",
-    departTime: "16:15",
-    distanceToNext: 2.6,
-    address: "Helsinki, Finland",
+    arriveTime: "17:40",
+    departTime: "18:20",
+    distanceToNext: 3.5,
   },
   {
-    id: "tired-uncle",
-    name: "Tired Uncle Brewing Co.",
-    logo: "/assets/brewery-logos/tireduncle.avif",
-    arriveTime: "16:30",
-    departTime: "17:00",
-    distanceToNext: 3.8,
-    address: "Helsinki, Finland",
-  },
-  {
-    id: "coolhead",
-    name: "CoolHead Brew",
-    logo: "/assets/brewery-logos/coolhead.png",
-    arriveTime: "17:30",
+    id: "oluthuone-haka",
+    name: "Oluthuone Haka",
+    logo: "/assets/brewery-logos/haka.png",
+    logoBoxClasses: "w-48 bg-white px-3",
+    arriveTime: "18:30",
+    arriveLabel: "Finishers' party",
     // No departure time - final stop
-    address: "Helsinki, Finland",
   },
 ];
+
+// Rounded because summing decimals produces float noise like 21.599999
+export const totalDistance =
+  Math.round(
+    breweryStops.reduce(
+      (total, stop) => total + (stop.distanceToNext || 0),
+      0,
+    ) * 10,
+  ) / 10;

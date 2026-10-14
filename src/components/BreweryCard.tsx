@@ -25,7 +25,9 @@ export const BreweryCard = ({
       >
         {/* Logo section - centered at top */}
         <div className="flex items-center justify-center bg-white/40 px-4 py-2">
-          <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-xl bg-white shadow-sm">
+          <div
+            className={`flex h-20 items-center justify-center overflow-hidden rounded-xl shadow-sm ${stop.logoBoxClasses ?? "w-20 bg-white"}`}
+          >
             <img
               src={stop.logo}
               alt={`${stop.name} logo`}
@@ -35,6 +37,7 @@ export const BreweryCard = ({
                 const target = e.target as HTMLImageElement;
                 target.style.display = "none";
                 const parent = target.parentElement;
+
                 if (parent) {
                   parent.innerHTML =
                     '<span class="font-bold text-xs text-gray-800">LOGO</span>';
@@ -46,7 +49,7 @@ export const BreweryCard = ({
 
         {/* Brewery name - centered */}
         <div className="px-4 pt-4 pb-2 text-center">
-          <h3 className="font-bold text-gray-900 text-xl">{stop.name}</h3>
+          <h3 className="font-bold text-gray-900 text-xl ">{stop.name}</h3>
         </div>
 
         {/* Schedule info - organized in a clean grid */}
@@ -75,7 +78,7 @@ export const BreweryCard = ({
             // Last stop - only arrival time
             <div className="text-center">
               <div className="mb-1 text-gray-500 text-xs uppercase tracking-wider">
-                Arrive
+                {stop.arriveLabel ?? "Arrive"}
               </div>
               <div className="font-semibold text-gray-900 text-lg">
                 {stop.arriveTime}

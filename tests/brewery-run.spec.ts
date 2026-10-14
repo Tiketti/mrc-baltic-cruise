@@ -1,4 +1,17 @@
-import { expect, test } from "@playwright/test";
+import { type Page, expect, test } from "@playwright/test";
+import {
+  type BreweryStop,
+  breweryStops,
+  eventDate,
+  totalDistance,
+} from "../src/breweryData";
+
+const eventYear = eventDate.getFullYear();
+const firstStop = breweryStops[0];
+const lastStop = breweryStops[breweryStops.length - 1];
+
+const stopHeading = (page: Page, stop: BreweryStop) =>
+  page.getByRole("heading", { name: stop.name, exact: true });
 
 test.describe("Brewery Run", () => {
   // Mock the LiveTrack API to return no active event so tests don't
@@ -19,9 +32,9 @@ test.describe("Brewery Run", () => {
   test("should load the brewery run page", async ({ page }) => {
     await page.goto("/brewery-run");
 
-    await expect(page).toHaveTitle(/Brewery Run 2025/);
+    await expect(page).toHaveTitle(new RegExp(`Brewery Run ${eventYear}`));
     await expect(
-      page.getByRole("heading", { name: "BREWERY RUN 2025" }),
+      page.getByRole("heading", { name: `BREWERY RUN ${eventYear}` }),
     ).toBeVisible();
   });
 
@@ -40,8 +53,16 @@ test.describe("Brewery Run", () => {
     await page.goto("/brewery-run");
 
     // Should show schedule content (brewery stops)
-    await expect(page.getByText(/CoolHead Brew/i)).toBeVisible();
-    await expect(page.getByText(/Masis Brewery/i)).toBeVisible();
+    await expect(stopHeading(page, firstStop)).toBeVisible();
+    await expect(stopHeading(page, lastStop)).toBeVisible();
+  });
+
+  test("should show the final stop's arrival label", async ({ page }) => {
+    await page.goto("/brewery-run");
+
+    await expect(
+      page.getByText(lastStop.arriveLabel ?? "Arrive", { exact: true }),
+    ).toBeVisible();
   });
 
   test("should switch between Schedule and Route tabs", async ({ page }) => {
@@ -57,12 +78,14 @@ test.describe("Brewery Run", () => {
     await page.getByRole("button", { name: "Schedule" }).click();
 
     // Should show schedule content again
-    await expect(page.getByText(/CoolHead Brew/i)).toBeVisible();
+    await expect(stopHeading(page, firstStop)).toBeVisible();
   });
 
   test("should show countdown to event", async ({ page }) => {
     // Freeze time to one day before the event so the countdown is visible
-    await page.clock.setFixedTime(new Date(2025, 9, 10, 10, 0, 0));
+    await page.clock.setFixedTime(
+      new Date(eventDate.getTime() - 24 * 60 * 60 * 1_000),
+    );
 
     await page.goto("/brewery-run");
 
@@ -75,22 +98,23 @@ test.describe("Brewery Run", () => {
   test("should display brewery stops with distances", async ({ page }) => {
     await page.goto("/brewery-run");
 
-    // Check that distances are shown (km format)
-    await expect(page.getByText(/km/i).first()).toBeVisible();
-
-    // Check for brewery names in the schedule
-    const breweries = [
-      "CoolHead Brew",
-      "Masis Brewery",
-      "Olarin Panimo",
-      "Solmu Brewery",
-      "Salamanation",
-      "Tired Uncle Brewing",
-    ];
-
-    for (const brewery of breweries) {
-      await expect(page.getByText(new RegExp(brewery, "i"))).toBeVisible();
+    for (const stop of breweryStops) {
+      await expect(stopHeading(page, stop)).toBeVisible();
     }
+
+    const legDistances = breweryStops.flatMap((stop) =>
+      stop.distanceToNext ? [stop.distanceToNext] : [],
+    );
+
+    for (const distance of new Set(legDistances)) {
+      await expect(
+        page.getByText(`${distance} km`, { exact: true }).first(),
+      ).toBeVisible();
+    }
+
+    await expect(
+      page.getByText(`Total Distance: ${totalDistance} km`),
+    ).toBeVisible();
   });
 
   test("should respect URL hash for initial tab", async ({ page, context }) => {
@@ -103,7 +127,7 @@ test.describe("Brewery Run", () => {
     await page2.goto("/brewery-run#schedule");
 
     // Should show Schedule content on fresh load
-    await expect(page2.getByText(/CoolHead Brew/i)).toBeVisible();
+    await expect(stopHeading(page2, firstStop)).toBeVisible();
     await page2.close();
   });
 });

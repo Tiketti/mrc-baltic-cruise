@@ -14,7 +14,9 @@ import { FALLBACK_MAP_URL } from "../constants";
 type TabType = "schedule" | "route" | "live";
 
 export const BreweryRun = () => {
-  useDocumentTitle("Brewery Run 2025 | MRC Helsinki");
+  const eventYear = eventDate.getFullYear();
+
+  useDocumentTitle(`Brewery Run ${eventYear} | MRC Helsinki`);
 
   const navigate = useNavigate();
   const tapCountRef = useRef(0);
@@ -115,16 +117,18 @@ export const BreweryRun = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <div className="mx-auto w-full max-w-md px-4 py-8 md:max-w-2xl lg:max-w-4xl">
+    <div data-theme="2026" className="min-h-screen bg-gray-900 text-white">
+      <header className="bg-primary px-2 pt-16 pb-3 text-center shadow-lg shadow-primary sm:pt-20">
         {/* biome-ignore lint/a11y/useKeyWithClickEvents: Easter egg feature - intentionally mouse/tap only */}
         <h1
-          className="mb-4 cursor-pointer select-none text-center font-bold text-3xl tracking-wider"
+          className="cursor-pointer select-none p-2 text-4xl text-surface tracking-wide sm:text-5xl md:text-6xl"
           onClick={handleHeaderTap}
         >
-          BREWERY RUN 2025
+          BREWERY RUN {eventYear}
         </h1>
+      </header>
 
+      <div className="mx-auto w-full max-w-md px-4 py-8 md:max-w-2xl lg:max-w-4xl">
         <div className="mb-4">
           <Countdown targetDate={eventDate} currentTime={mockTime} />
         </div>

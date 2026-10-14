@@ -12,6 +12,7 @@ const THEME_BY_PATH: Record<string, string> = {
   "/baltic-cruise-2027": "2027",
   [CRUISE2_PATH]: "2026",
   "/baltic-cruise-2026": "2026",
+  "/brewery-run": "2026",
 };
 
 const TABS = [
