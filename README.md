@@ -9,6 +9,28 @@ This project contains multiple MRC event sites:
 - **Baltic Cruise (/baltic-cruise)**: Archived 2025 Baltic Cruise site  
 - **Brewery Run (/brewery-run)**: Helsinki brewery-to-brewery running event
 
+## Link Previews (OpenGraph)
+
+Link-preview crawlers (Telegram, WhatsApp, Facebook, Slack) don't run JavaScript, so setting meta tags from React does nothing for them. They read the raw HTML. By default every path serves `index.html`, whose OG tags advertise the upcoming Baltic Cruise.
+
+Routes that get shared on their own get a static HTML file of their own at build time. The `og-per-route` plugin in `vite.config.ts`:
+
+1. Copies the built `dist/index.html` to `dist/<route>/index.html` with that route's `og:title`, `og:description`, `og:image`, `twitter:image`, `og:url` and `<title>` swapped in. The build fails if any of those tags can't be found, so editing `index.html` can't silently ship the cruise tags on another route.
+2. Prepends a `/<route>  /<route>/index.html  200` rewrite to `dist/_redirects`, ahead of the SPA catch-all, so the path works with or without a trailing slash.
+3. Applies the same rewrite in `pnpm preview`, so local preview serves exactly what Netlify does.
+
+**Adding a route:** add an entry to `ogPages` in `vite.config.ts`. OG images live in `public/assets/og_*` and should be 1200×630 (1.91:1).
+
+**Hash and query strings:** `/brewery-run` rewrites itself to `/brewery-run#schedule` in the browser via `history.replaceState`. That never reaches the server, and URL fragments aren't sent in HTTP requests anyway, so `/brewery-run#schedule` and `/brewery-run?mockTime=12:30` get the brewery tags too.
+
+**Verifying:** `pnpm dev` always shows the cruise tags, because the per-route files only exist in the build. Use `pnpm build && pnpm preview`, or check production directly:
+
+```bash
+curl -s https://mikkellerrunning.club/brewery-run | grep og:
+```
+
+**Stale previews:** crawlers cache aggressively. After changing tags or images, refresh Telegram via [@WebpageBot](https://t.me/WebpageBot) and Facebook/WhatsApp via the [Sharing Debugger](https://developers.facebook.com/tools/debug/), or share the link with a throwaway query such as `?v=2`.
+
 ## Brewery Run Features
 
 The brewery run site includes:
