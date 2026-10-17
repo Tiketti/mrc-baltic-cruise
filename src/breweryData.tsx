@@ -25,7 +25,7 @@ export const breweryStops: BreweryStop[] = [
     logoBoxClasses: "w-48 bg-white px-3",
     meetTime: "12:30",
     departTime: "13:00",
-    distanceToNext: 4.2,
+    distanceToNext: 4.4,
   },
   {
     id: "masis",
@@ -33,7 +33,7 @@ export const breweryStops: BreweryStop[] = [
     logo: "/assets/brewery-logos/masis.png",
     arriveTime: "13:25",
     departTime: "14:05",
-    distanceToNext: 5.3,
+    distanceToNext: 5,
   },
   {
     id: "ukko-munkki",
@@ -42,7 +42,7 @@ export const breweryStops: BreweryStop[] = [
     logoClasses: "p-2",
     arriveTime: "14:40",
     departTime: "15:20",
-    distanceToNext: 3.5,
+    distanceToNext: 2.8,
   },
   {
     id: "viisi-pennia",
@@ -51,7 +51,7 @@ export const breweryStops: BreweryStop[] = [
     logoBoxClasses: "w-44 bg-white px-2",
     arriveTime: "15:40",
     departTime: "16:20",
-    distanceToNext: 3.5,
+    distanceToNext: 3.4,
   },
   {
     id: "salamanation",
@@ -59,7 +59,7 @@ export const breweryStops: BreweryStop[] = [
     logo: "/assets/brewery-logos/salamanation.svg",
     arriveTime: "16:40",
     departTime: "17:20",
-    distanceToNext: 3,
+    distanceToNext: 3.8,
   },
   {
     id: "olarin-panimo",
@@ -68,7 +68,7 @@ export const breweryStops: BreweryStop[] = [
     logoClasses: "mix-blend-multiply", // Blends away white background
     arriveTime: "17:40",
     departTime: "18:20",
-    distanceToNext: 2.5,
+    distanceToNext: 2.3,
   },
   {
     id: "oluthuone-haka",
