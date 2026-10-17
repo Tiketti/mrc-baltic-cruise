@@ -6,7 +6,9 @@ import {
   fallbackTotalDistance,
   totalDistance,
 } from "../src/breweryData";
-import { SHOW_ROUTE_TAB } from "../src/constants";
+import { FALLBACK_MAP_URL } from "../src/constants";
+
+const LIVE_TRACK_URL = "https://livetrack.garmin.com/session/test123";
 
 const eventYear = eventDate.getFullYear();
 const firstStop = breweryStops[0];
@@ -15,12 +17,14 @@ const lastStop = breweryStops[breweryStops.length - 1];
 const stopHeading = (page: Page, stop: BreweryStop) =>
   page.getByRole("heading", { name: stop.name, exact: true });
 
-// The tab bar only appears when there's something besides the schedule to switch to
+const routeMap = (page: Page) => page.locator('iframe[title="Route Map"]');
+const liveMap = (page: Page) => page.locator('iframe[title="Live Track"]');
+
 const expectTabs = async (page: Page, { live }: { live: boolean }) => {
   const tab = (name: string) => page.getByRole("button", { name, exact: true });
 
-  await expect(tab("Schedule")).toHaveCount(SHOW_ROUTE_TAB || live ? 1 : 0);
-  await expect(tab("Route")).toHaveCount(SHOW_ROUTE_TAB ? 1 : 0);
+  await expect(tab("Schedule")).toHaveCount(1);
+  await expect(tab("Route")).toHaveCount(1);
   await expect(page.getByRole("button", { name: /^Live/ })).toHaveCount(
     live ? 1 : 0,
   );
@@ -61,17 +65,6 @@ test.describe("Brewery Run", () => {
     await expectTabs(page, { live: false });
   });
 
-  test("should open the schedule when #route is requested but hidden", async ({
-    page,
-  }) => {
-    test.skip(SHOW_ROUTE_TAB, "Only applies while the route tab is hidden");
-
-    await page.goto("/brewery-run#route");
-
-    await expect(stopHeading(page, firstStop)).toBeVisible();
-    await expect(page.getByRole("img", { name: "Route Map" })).toHaveCount(0);
-  });
-
   test("should show schedule content by default", async ({ page }) => {
     await page.goto("/brewery-run");
 
@@ -89,15 +82,12 @@ test.describe("Brewery Run", () => {
   });
 
   test("should switch between Schedule and Route tabs", async ({ page }) => {
-    test.skip(!SHOW_ROUTE_TAB, "Route tab is hidden");
-
     await page.goto("/brewery-run");
 
-    // Click Route tab
     await page.getByRole("button", { name: "Route" }).click();
 
-    // Should show route map image (local asset renders as img, not iframe)
-    await expect(page.getByRole("img", { name: "Route Map" })).toBeVisible();
+    await expect(routeMap(page)).toBeVisible();
+    await expect(routeMap(page)).toHaveAttribute("src", FALLBACK_MAP_URL);
 
     // Switch back to Schedule
     await page.getByRole("button", { name: "Schedule" }).click();
@@ -152,11 +142,9 @@ test.describe("Brewery Run", () => {
   });
 
   test("should respect URL hash for initial tab", async ({ page, context }) => {
-    test.skip(!SHOW_ROUTE_TAB, "Route tab is hidden");
-
     // Test #route hash by loading in a fresh page context
     await page.goto("/brewery-run#route");
-    await expect(page.getByRole("img", { name: "Route Map" })).toBeVisible();
+    await expect(routeMap(page)).toBeVisible();
 
     // Test #schedule hash by creating a new page (fresh load)
     const page2 = await context.newPage();
@@ -304,8 +292,6 @@ test.describe("Brewery Run - Live Track Feature", () => {
     page,
     context,
   }) => {
-    test.skip(!SHOW_ROUTE_TAB, "Route tab is hidden");
-
     // Mock API failure
     await context.route(
       "**/livetrack-api.perttu-468.workers.dev/api/livetrack",
@@ -328,9 +314,9 @@ test.describe("Brewery Run - Live Track Feature", () => {
     await expect(page.getByRole("button", { name: "Route" })).toBeVisible();
     await expect(page.getByRole("button", { name: "Live" })).not.toBeVisible();
 
-    // Click Route tab - should show static map
+    // Click Route tab - should show the planned course
     await page.getByRole("button", { name: "Route" }).click();
-    await expect(page.getByRole("img", { name: "Route Map" })).toBeVisible();
+    await expect(routeMap(page)).toBeVisible();
   });
 
   test("should switch to route tab when live event expires", async ({
@@ -378,11 +364,59 @@ test.describe("Brewery Run - Live Track Feature", () => {
 
     // Live tab should no longer be visible (> 2 hours and not live)
     await expectTabs(page, { live: false });
-    await expect(
-      SHOW_ROUTE_TAB
-        ? page.getByRole("img", { name: "Route Map" })
-        : stopHeading(page, firstStop),
-    ).toBeVisible();
+    await expect(routeMap(page)).toBeVisible();
+  });
+
+  test.describe("while the event is live", () => {
+    test.beforeEach(async ({ context }) => {
+      await context.route(
+        "**/livetrack-api.perttu-468.workers.dev/api/livetrack",
+        (route) => {
+          route.fulfill({
+            status: 200,
+            contentType: "application/json",
+            body: JSON.stringify({
+              url: LIVE_TRACK_URL,
+              timestamp: new Date().toISOString(),
+              isLive: true,
+            }),
+          });
+        },
+      );
+    });
+
+    test("should prefer the live track over the planned route", async ({
+      page,
+    }) => {
+      await page.goto("/brewery-run#route");
+
+      await expect(liveMap(page)).toHaveAttribute("src", LIVE_TRACK_URL);
+      await expect(routeMap(page)).toHaveCount(0);
+    });
+
+    test("should honor a shared #live link", async ({ page }) => {
+      await page.goto("/brewery-run#live");
+
+      await expect(liveMap(page)).toHaveAttribute("src", LIVE_TRACK_URL);
+    });
+
+    test("should still let people look at the planned route", async ({
+      page,
+    }) => {
+      await page.goto("/brewery-run#route");
+      await expect(liveMap(page)).toBeVisible();
+
+      await page.getByRole("button", { name: "Route", exact: true }).click();
+
+      await expect(routeMap(page)).toHaveAttribute("src", FALLBACK_MAP_URL);
+    });
+
+    test("should leave the schedule alone", async ({ page }) => {
+      await page.goto("/brewery-run");
+
+      await expect(page.getByRole("button", { name: /^Live/ })).toBeVisible();
+      await expect(stopHeading(page, firstStop)).toBeVisible();
+    });
   });
 });
 

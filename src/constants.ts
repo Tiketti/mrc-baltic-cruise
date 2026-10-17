@@ -2,11 +2,9 @@
 export const CLOUDFLARE_WORKER_URL =
   "https://livetrack-api.perttu-468.workers.dev/api/livetrack";
 
-// Fallback static route image (used when no LiveTrack URL is set)
-export const FALLBACK_MAP_URL = "/assets/brewery-run-route.png";
-
-// The image above is last year's route. Flip to true once this year's replaces it.
-export const SHOW_ROUTE_TAB = false;
+// Planned course, shown when the organizers aren't broadcasting a LiveTrack
+export const FALLBACK_MAP_URL =
+  "https://connect.garmin.com/embed/course/524560566";
 
 // Maximum age (in hours) for LiveTrack URL to be considered active
 export const LIVE_TRACK_MAX_AGE_HOURS = 7;

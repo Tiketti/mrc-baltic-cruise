@@ -6,10 +6,6 @@ interface MapTabProps {
   finishedTimestamp?: string | null;
 }
 
-// Local assets are rendered as images, external URLs as iframes
-const isLocalAsset = (url: string) =>
-  url.startsWith("/") || url.startsWith(".");
-
 export const MapTab = ({
   url,
   title,
@@ -73,12 +69,6 @@ export const MapTab = ({
                 </p>
               </div>
             </div>
-          ) : isLocalAsset(url) ? (
-            <img
-              src={url}
-              alt={title}
-              className="h-full w-full object-contain"
-            />
           ) : (
             <iframe
               src={url}
