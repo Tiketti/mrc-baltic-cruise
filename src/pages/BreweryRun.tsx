@@ -1,16 +1,16 @@
-import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
 import { Eye } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import { breweryStops, eventDate } from "../breweryData";
 import { Countdown } from "../components/Countdown";
 import { MapTab } from "../components/MapTab";
 import { ScheduleTab } from "../components/ScheduleTab";
-import { useDocumentTitle } from "../hooks/useDocumentTitle";
+import { FALLBACK_MAP_URL } from "../constants";
 import { useCurrentTime } from "../hooks/useCurrentTime";
+import { useDocumentTitle } from "../hooks/useDocumentTitle";
 import { useLiveTrackUrl } from "../hooks/useLiveTrackUrl";
 import { calculateCurrentStatus, isSameDay } from "../utils/timeCalculations";
-import { FALLBACK_MAP_URL, SHOW_ROUTE_TAB } from "../constants";
 
 type TabType = "schedule" | "route" | "live";
 
@@ -83,7 +83,7 @@ export const BreweryRun = () => {
       );
     }
 
-    if (SHOW_ROUTE_TAB && (hash === "route" || hash === "map")) {
+    if (hash === "route" || hash === "map") {
       return "route";
     }
     if (hash === "live") {
@@ -102,18 +102,23 @@ export const BreweryRun = () => {
     window.history.replaceState(window.history.state, "", `#${activeTab}`);
   }, [activeTab]);
 
-  // If live tab is active but live track is no longer recent, fall back to the route
-  // map, or the schedule while there's no map to show
-  useEffect(() => {
-    if (activeTab === "live" && !isLiveTrackRecent) {
-      setActiveTab(SHOW_ROUTE_TAB ? "route" : "schedule");
-    }
-  }, [activeTab, isLiveTrackRecent]);
-
   const showLiveTab = Boolean(isLiveTrackRecent && liveTrackUrl);
 
-  // A tab bar with only "Schedule" in it would be a pointless button
-  const showTabBar = SHOW_ROUTE_TAB || showLiveTab;
+  // Wait for the API before bailing out of #live, or a shared live link would always
+  // land on the route because nothing is "recent" while the request is in flight
+  useEffect(() => {
+    if (!liveTrackLoading && activeTab === "live" && !isLiveTrackRecent) {
+      setActiveTab("route");
+    }
+  }, [activeTab, isLiveTrackRecent, liveTrackLoading]);
+
+  // The planned course is only a stand-in for the real thing. The API is fetched once,
+  // so this fires once on load and won't fight someone tapping back to Route later.
+  useEffect(() => {
+    if (!liveTrackLoading && showLiveTab) {
+      setActiveTab((tab) => (tab === "route" ? "live" : tab));
+    }
+  }, [liveTrackLoading, showLiveTab]);
 
   // ?mockTime=13:00 (also 13.00 or 9:30) pretends it's that time on the event day.
   // It's an offset from the real clock rather than a frozen time, so the page keeps
@@ -176,59 +181,55 @@ export const BreweryRun = () => {
           <Countdown targetDate={eventDate} timeOffsetMs={mockOffsetMs} />
         </div>
 
-        {showTabBar && (
-          <div className="mb-2 flex rounded-lg bg-gray-800 p-1">
+        <div className="mb-2 flex rounded-lg bg-gray-800 p-1">
+          <button
+            type="button"
+            onClick={() => setActiveTab("schedule")}
+            className={`flex-1 rounded-md border-0 px-4 py-2 text-center font-medium text-sm outline-none transition-colors ${
+              activeTab === "schedule"
+                ? "bg-primary text-white shadow-sm"
+                : "bg-transparent text-gray-300 hover:text-white"
+            }`}
+            style={activeTab === "schedule" ? { color: "white" } : undefined}
+          >
+            Schedule
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab("route")}
+            className={`flex-1 rounded-md border-0 px-4 py-2 text-center font-medium text-sm outline-none transition-colors ${
+              activeTab === "route"
+                ? "bg-primary text-white shadow-sm"
+                : "bg-transparent text-gray-300 hover:text-white"
+            }`}
+            style={activeTab === "route" ? { color: "white" } : undefined}
+          >
+            Route
+          </button>
+          {showLiveTab && (
             <button
               type="button"
-              onClick={() => setActiveTab("schedule")}
+              onClick={() => setActiveTab("live")}
               className={`flex-1 rounded-md border-0 px-4 py-2 text-center font-medium text-sm outline-none transition-colors ${
-                activeTab === "schedule"
+                activeTab === "live"
                   ? "bg-primary text-white shadow-sm"
                   : "bg-transparent text-gray-300 hover:text-white"
               }`}
-              style={activeTab === "schedule" ? { color: "white" } : undefined}
+              style={activeTab === "live" ? { color: "white" } : undefined}
             >
-              Schedule
+              <span className="inline-flex items-center gap-1.5">
+                Live
+                {isLive && (
+                  <Eye
+                    className="animate-pulse text-red-500"
+                    size={16}
+                    strokeWidth={2.5}
+                  />
+                )}
+              </span>
             </button>
-            {SHOW_ROUTE_TAB && (
-              <button
-                type="button"
-                onClick={() => setActiveTab("route")}
-                className={`flex-1 rounded-md border-0 px-4 py-2 text-center font-medium text-sm outline-none transition-colors ${
-                  activeTab === "route"
-                    ? "bg-primary text-white shadow-sm"
-                    : "bg-transparent text-gray-300 hover:text-white"
-                }`}
-                style={activeTab === "route" ? { color: "white" } : undefined}
-              >
-                Route
-              </button>
-            )}
-            {showLiveTab && (
-              <button
-                type="button"
-                onClick={() => setActiveTab("live")}
-                className={`flex-1 rounded-md border-0 px-4 py-2 text-center font-medium text-sm outline-none transition-colors ${
-                  activeTab === "live"
-                    ? "bg-primary text-white shadow-sm"
-                    : "bg-transparent text-gray-300 hover:text-white"
-                }`}
-                style={activeTab === "live" ? { color: "white" } : undefined}
-              >
-                <span className="inline-flex items-center gap-1.5">
-                  Live
-                  {isLive && (
-                    <Eye
-                      className="animate-pulse text-red-500"
-                      size={16}
-                      strokeWidth={2.5}
-                    />
-                  )}
-                </span>
-              </button>
-            )}
-          </div>
-        )}
+          )}
+        </div>
 
         {activeTab === "schedule" ? (
           <ScheduleTab
